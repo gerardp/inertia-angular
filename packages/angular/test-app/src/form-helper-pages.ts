@@ -1,5 +1,5 @@
 import { Component, afterNextRender, input } from '@angular/core'
-import { Link, useForm, usePage, type ResolvedComponent } from '@inertiajs/angular'
+import { Link, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
 import type { UseFormSubmitOptions } from '@inertiajs/core'
 
 const inputValue = (event: Event): string => (event.target as HTMLInputElement).value

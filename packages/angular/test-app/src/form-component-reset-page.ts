@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, viewChild } from '@angular/core'
-import { Form, type ResolvedComponent } from '@inertiajs/angular'
+import { Form, type ResolvedComponent } from 'inertia-angular'
 import type { FormDataConvertible } from '@inertiajs/core'
 
 declare global {

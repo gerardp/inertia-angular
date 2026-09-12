@@ -12,7 +12,7 @@ import {
   usePoll,
   useRemember,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 @Component({
   selector: 'playground-layout',

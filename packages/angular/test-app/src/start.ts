@@ -1,4 +1,4 @@
-import { createInertiaApp, router } from '@inertiajs/angular'
+import { createInertiaApp, router } from 'inertia-angular'
 import { axiosAdapter, type HttpClient, type HttpClientOptions, type Page, type VisitOptions } from '@inertiajs/core'
 import { AppLayout, DefaultLayout } from './layout-pages'
 import { fallbackPage, pages, WITH_APP_VALUE } from './pages'

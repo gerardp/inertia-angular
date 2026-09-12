@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core'
-import { Link, router, type ResolvedComponent } from '@inertiajs/angular'
+import { Link, router, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-history-page',

@@ -1,5 +1,5 @@
 import { Component, InjectionToken, Signal, afterNextRender, inject, input } from '@angular/core'
-import { Head, InfiniteScroll, LayoutOutlet, Link, usePage, type ResolvedComponent } from '@inertiajs/angular'
+import { Head, InfiniteScroll, LayoutOutlet, Link, usePage, type ResolvedComponent } from 'inertia-angular'
 import type { Method, Page } from '@inertiajs/core'
 import { clientVisitPages } from './client-visit-pages'
 import { configPages } from './config-pages'

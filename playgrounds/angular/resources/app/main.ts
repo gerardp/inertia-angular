@@ -1,4 +1,4 @@
-import { createInertiaApp } from '@inertiajs/angular'
+import { createInertiaApp } from 'inertia-angular'
 import { PlaygroundLayout, pages } from './pages'
 
 void createInertiaApp({

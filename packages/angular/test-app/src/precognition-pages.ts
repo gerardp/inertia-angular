@@ -7,7 +7,7 @@ import {
   type InertiaFormComponent as FormDirectiveApi,
   type InertiaPrecognitiveFormProps,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 import type { FormDataConvertible, FormDataKeys, Method, UrlMethodPair } from '@inertiajs/core'
 import type { NamedInputEvent } from 'laravel-precognition'
 

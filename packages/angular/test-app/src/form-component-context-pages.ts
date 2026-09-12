@@ -1,5 +1,5 @@
 import { ApplicationRef, Component, inject, input, signal } from '@angular/core'
-import { Form, useFormContext, type InertiaFormComponent, type ResolvedComponent } from '@inertiajs/angular'
+import { Form, useFormContext, type InertiaFormComponent, type ResolvedComponent } from 'inertia-angular'
 import type { FormDataConvertible } from '@inertiajs/core'
 
 type ContextForm = InertiaFormComponent<Record<string, FormDataConvertible>>

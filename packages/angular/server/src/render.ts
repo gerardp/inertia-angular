@@ -8,7 +8,7 @@ import {
   type ComponentResolver,
   type InertiaAppProps,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 import { buildSSRBody, resolveServerHead, type InertiaAppSSRResponse, type Page, type PageProps } from '@inertiajs/core'
 
 export interface RenderAngularAppOptions<SharedProps extends PageProps = PageProps> {

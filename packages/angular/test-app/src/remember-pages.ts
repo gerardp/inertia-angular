@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core'
-import { Link, router, useForm, useRemember, type ResolvedComponent } from '@inertiajs/angular'
+import { Link, router, useForm, useRemember, type ResolvedComponent } from 'inertia-angular'
 
 type RememberData = { name: string; remember: boolean }
 

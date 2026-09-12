@@ -1,5 +1,5 @@
 import { Component, DestroyRef, afterNextRender, inject, input, signal } from '@angular/core'
-import { LayoutOutlet, Link, router, useForm, type ResolvedComponent } from '@inertiajs/angular'
+import { LayoutOutlet, Link, router, useForm, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-prefetch-layout',

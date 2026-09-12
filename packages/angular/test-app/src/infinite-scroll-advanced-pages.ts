@@ -22,7 +22,7 @@ import {
   useForm,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 type User = { id: number; name: string }
 type Users = { data: User[] }

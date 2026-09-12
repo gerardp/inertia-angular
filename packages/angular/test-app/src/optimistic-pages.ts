@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core'
-import { router, useForm, type ResolvedComponent } from '@inertiajs/angular'
+import { router, useForm, type ResolvedComponent } from 'inertia-angular'
 
 type Todo = { id: number; name: string; done: boolean }
 

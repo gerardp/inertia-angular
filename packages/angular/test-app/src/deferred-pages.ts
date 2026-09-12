@@ -9,7 +9,7 @@ import {
   useForm,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 type TextProp = { text: string }
 type ResultsProp = { data: string[]; page: number }

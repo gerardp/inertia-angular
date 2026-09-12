@@ -6,7 +6,7 @@ import {
   usePage,
   type AngularRenderFunction,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 @Component({
   selector: 'test-default-layout',

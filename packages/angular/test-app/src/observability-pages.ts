@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core'
-import { http, progress, router, type ResolvedComponent } from '@inertiajs/angular'
+import { http, progress, router, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-error-modal',

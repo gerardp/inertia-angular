@@ -7,7 +7,7 @@ import {
   router,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 @Component({
   selector: 'test-once-page-a',

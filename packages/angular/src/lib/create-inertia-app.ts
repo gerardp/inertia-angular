@@ -53,7 +53,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
   }
 
   if (typeof document === 'undefined') {
-    throw new Error('Use @inertiajs/angular/server to render an Angular Inertia application on the server.')
+    throw new Error('Use inertia-angular/server to render an Angular Inertia application on the server.')
   }
 
   const initialPage = page ?? getInitialPageFromDOM<Page<SharedProps>>(id)

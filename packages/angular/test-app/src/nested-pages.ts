@@ -10,7 +10,7 @@ import {
   router,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 const deferredImports = [Deferred, DeferredContent, DeferredFallback] as const
 

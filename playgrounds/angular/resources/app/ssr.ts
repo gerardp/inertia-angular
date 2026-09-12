@@ -1,5 +1,5 @@
 import { isMainModule } from '@angular/ssr/node'
-import { createServer, renderAngularApp } from '@inertiajs/angular/server'
+import { createServer, renderAngularApp } from 'inertia-angular/server'
 import { PlaygroundLayout, pages } from './pages'
 
 const render = (page: Parameters<typeof renderAngularApp>[0]) =>

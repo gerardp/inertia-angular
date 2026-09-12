@@ -18,7 +18,7 @@ else
 fi
 
 echo "Building the Angular adapter package..."
-pnpm --filter @inertiajs/angular build
+pnpm --filter inertia-angular build
 
 # Set up environment configuration
 if [ ! -f ".env" ]; then

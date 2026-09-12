@@ -8,7 +8,7 @@ import {
   useForm,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 import type { ReloadOptions } from '@inertiajs/core'
 
 const visibleImports = [WhenVisible, WhenVisibleContent, WhenVisibleFallback] as const

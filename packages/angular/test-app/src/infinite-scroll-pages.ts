@@ -1,5 +1,5 @@
 import { Component, Directive, afterNextRender, computed, input, signal, viewChild } from '@angular/core'
-import { InfiniteScroll, usePage, type ResolvedComponent } from '@inertiajs/angular'
+import { InfiniteScroll, usePage, type ResolvedComponent } from 'inertia-angular'
 
 type User = { id: number; name: string }
 type Users = { data: User[] }

@@ -22,8 +22,8 @@ import {
   type InertiaLinkProps,
   type ResolvedComponent,
   type WhenVisibleTemplateContext,
-} from '@inertiajs/angular'
-import { renderAngularApp, type RenderAngularAppOptions } from '@inertiajs/angular/server'
+} from 'inertia-angular'
+import { renderAngularApp, type RenderAngularAppOptions } from 'inertia-angular/server'
 import type { Page } from '@inertiajs/core'
 
 type Equal<Left, Right> =

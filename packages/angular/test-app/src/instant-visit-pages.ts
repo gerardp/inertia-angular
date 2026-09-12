@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core'
-import { Deferred, DeferredContent, DeferredFallback, Link, router, type ResolvedComponent } from '@inertiajs/angular'
+import { Deferred, DeferredContent, DeferredFallback, Link, router, type ResolvedComponent } from 'inertia-angular'
 import type { Errors, UrlMethodPair } from '@inertiajs/core'
 
 @Component({

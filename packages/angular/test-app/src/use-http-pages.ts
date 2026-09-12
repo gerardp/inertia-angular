@@ -1,5 +1,5 @@
 import { Component, afterNextRender, signal } from '@angular/core'
-import { Link, useHttp, type ResolvedComponent, type UseHttpProps } from '@inertiajs/angular'
+import { Link, useHttp, type ResolvedComponent, type UseHttpProps } from 'inertia-angular'
 
 type UserResponse = {
   success: boolean

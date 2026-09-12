@@ -1,6 +1,6 @@
 import { JsonPipe } from '@angular/common'
 import { Component, DestroyRef, Directive, afterNextRender, inject, input, signal } from '@angular/core'
-import { LayoutOutlet, Link, router, type ResolvedComponent } from '@inertiajs/angular'
+import { LayoutOutlet, Link, router, type ResolvedComponent } from 'inertia-angular'
 import type { CacheForOption, Method, Page, RequestPayload, UrlMethodPair, VisitHelperOptions } from '@inertiajs/core'
 
 const scrollLayoutTemplate = `

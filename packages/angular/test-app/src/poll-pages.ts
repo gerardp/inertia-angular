@@ -1,5 +1,5 @@
 import { Component, DestroyRef, afterNextRender, inject, input, signal } from '@angular/core'
-import { Link, router, useForm, usePage, usePoll, type ResolvedComponent } from '@inertiajs/angular'
+import { Link, router, useForm, usePage, usePoll, type ResolvedComponent } from 'inertia-angular'
 import type { PollOptions } from '@inertiajs/core'
 
 @Component({ selector: 'test-poll-hook', imports: [Link], template: '<a inertiaLink href="/">Home</a>' })

@@ -1,6 +1,6 @@
 # Angular playground
 
-This is the official Laravel 13 playground for `@inertiajs/angular`. It is a standalone, strict, zoneless Angular 22 application. Inertia owns navigation, so the application intentionally has no Angular Router, Zone.js, NgModules, or Spartan NG dependency.
+This is the official Laravel 13 playground for `inertia-angular`. It is a standalone, strict, zoneless Angular 22 application. Inertia owns navigation, so the application intentionally has no Angular Router, Zone.js, NgModules, or Spartan NG dependency.
 
 ## Setup and development
 
@@ -21,7 +21,7 @@ php artisan inertia:start-ssr
 php artisan serve
 ```
 
-The browser build uses AOT and strict template checking. The SSR build uses `@inertiajs/angular/server` and emits `bootstrap/ssr/ssr.js`, the same Inertia SSR protocol used by the other official playgrounds.
+The browser build uses AOT and strict template checking. The SSR build uses `inertia-angular/server` and emits `bootstrap/ssr/ssr.js`, the same Inertia SSR protocol used by the other official playgrounds.
 
 The pages demonstrate navigation and page props, a persistent layout and Head, signal forms and Precognition, deferred props, polling, optimistic updates, remembered state, infinite scroll, SSR, and hydration.
 

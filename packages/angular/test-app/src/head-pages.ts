@@ -1,5 +1,5 @@
 import { Component, input, signal } from '@angular/core'
-import { Head, Link, router, usePage, type ResolvedComponent } from '@inertiajs/angular'
+import { Head, Link, router, usePage, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-head',

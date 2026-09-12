@@ -8,7 +8,7 @@ import {
   router,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 import type { Page } from '@inertiajs/core'
 import { WithScrollLayout, WithoutScrollLayout } from './link-pages'
 

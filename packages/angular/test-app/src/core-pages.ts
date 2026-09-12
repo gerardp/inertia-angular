@@ -1,5 +1,5 @@
 import { Component, DestroyRef, afterNextRender, inject, input } from '@angular/core'
-import { Link, router, useForm, usePage, type ResolvedComponent } from '@inertiajs/angular'
+import { Link, router, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
 import type { VisitOptions } from '@inertiajs/core'
 
 @Component({

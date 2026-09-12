@@ -1,5 +1,5 @@
 import { ApplicationRef, Component, DestroyRef, afterNextRender, computed, inject, input, signal } from '@angular/core'
-import { Form, Link, type InertiaFormComponent, type ResolvedComponent } from '@inertiajs/angular'
+import { Form, Link, type InertiaFormComponent, type ResolvedComponent } from 'inertia-angular'
 import type {
   CancelToken,
   FormComponentOptions,

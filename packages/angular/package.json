@@ -1,28 +1,34 @@
 {
-  "name": "@inertiajs/angular",
+  "name": "inertia-angular",
   "version": "3.7.1",
   "license": "MIT",
-  "description": "The Angular adapter for Inertia.js",
-  "contributors": [
-    "Jonathan Reinink <jonathan@reinink.ca>",
-    "Gerard Porto <gporto@gmail.com>"
+  "description": "Angular adapter for Inertia.js (community package)",
+  "author": "Gerard Porto <gporto@gmail.com>",
+  "keywords": [
+    "inertia",
+    "inertiajs",
+    "angular",
+    "laravel",
+    "adonisjs",
+    "ssr"
   ],
-  "homepage": "https://inertiajs.com/",
+  "homepage": "https://github.com/gerardp/inertia-angular/tree/main/packages/angular",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inertiajs/inertia.git",
+    "url": "git+https://github.com/gerardp/inertia-angular.git",
     "directory": "packages/angular"
   },
   "bugs": {
-    "url": "https://github.com/inertiajs/inertia/issues"
+    "url": "https://github.com/gerardp/inertia-angular/issues"
   },
   "type": "module",
   "scripts": {
     "build": "ng build angular",
-    "build:with-deps": "pnpm build && esbuild dist/fesm2022/inertiajs-angular.mjs --bundle --format=esm --target=es2022 --external:@angular/* --outfile=.angular/with-deps.mjs && esbuild dist/fesm2022/inertiajs-angular-server.mjs --bundle --format=esm --target=es2022 --platform=node --external:@angular/* --outfile=.angular/with-deps-server.mjs",
+    "build:with-deps": "pnpm build && esbuild dist/fesm2022/inertia-angular.mjs --bundle --format=esm --target=es2022 --external:@angular/* --outfile=.angular/with-deps.mjs && esbuild dist/fesm2022/inertia-angular-server.mjs --bundle --format=esm --target=es2022 --platform=node --external:@angular/* --outfile=.angular/with-deps-server.mjs",
     "dev": "ng build angular --watch --configuration development",
     "es2022-check": "pnpm build:with-deps && es-check es2022 \"dist/fesm2022/*.mjs\" \".angular/with-deps*.mjs\" --checkFeatures --module --noCache --verbose",
     "lint": "oxlint src server",
+    "release": "pnpm build && pnpm publish --no-git-checks",
     "publint": "pnpm build && publint dist --pack=false",
     "test": "ng test angular --watch=false",
     "type-check": "ng build angular --configuration development"
@@ -43,7 +49,7 @@
     }
   },
   "dependencies": {
-    "@inertiajs/core": "workspace:*",
+    "@inertiajs/core": "workspace:^",
     "es-toolkit": "^1.33.0",
     "laravel-precognition": "^2.0.0",
     "tslib": "^2.8.1"

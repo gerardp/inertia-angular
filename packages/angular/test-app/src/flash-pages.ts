@@ -7,7 +7,7 @@ import {
   router,
   usePage,
   type ResolvedComponent,
-} from '@inertiajs/angular'
+} from 'inertia-angular'
 
 declare global {
   interface Window {
