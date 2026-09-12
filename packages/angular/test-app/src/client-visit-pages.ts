@@ -1,6 +1,6 @@
 import { Component, OnChanges, input, signal } from '@angular/core'
-import { Link, router, type ResolvedComponent } from 'inertia-angular'
 import type { Page } from '@inertiajs/core'
+import { Link, router, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-async-a',

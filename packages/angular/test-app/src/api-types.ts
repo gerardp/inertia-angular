@@ -1,4 +1,5 @@
 import { Component, type Signal, type Type } from '@angular/core'
+import type { Page } from '@inertiajs/core'
 import {
   Deferred,
   Form,
@@ -24,7 +25,6 @@ import {
   type WhenVisibleTemplateContext,
 } from 'inertia-angular'
 import { renderAngularApp, type RenderAngularAppOptions } from 'inertia-angular/server'
-import type { Page } from '@inertiajs/core'
 
 type Equal<Left, Right> =
   (<Value>() => Value extends Left ? 1 : 2) extends <Value>() => Value extends Right ? 1 : 2 ? true : false

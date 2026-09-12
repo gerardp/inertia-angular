@@ -1,4 +1,5 @@
 import { Component, computed, signal } from '@angular/core'
+import type { FormDataConvertible, FormDataKeys, Method, UrlMethodPair } from '@inertiajs/core'
 import {
   Form as InertiaFormDirective,
   config,
@@ -8,7 +9,6 @@ import {
   type InertiaPrecognitiveFormProps,
   type ResolvedComponent,
 } from 'inertia-angular'
-import type { FormDataConvertible, FormDataKeys, Method, UrlMethodPair } from '@inertiajs/core'
 import type { NamedInputEvent } from 'laravel-precognition'
 
 const value = (event: Event): string => (event.target as HTMLInputElement).value

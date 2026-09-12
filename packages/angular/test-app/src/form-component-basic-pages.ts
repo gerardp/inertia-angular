@@ -1,6 +1,6 @@
 import { Component, computed, effect, input, signal } from '@angular/core'
-import { Form, config, type ResolvedComponent } from 'inertia-angular'
 import type { FormComponentOnSubmitCompleteArguments, FormDataConvertible } from '@inertiajs/core'
+import { Form, config, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-form-elements',

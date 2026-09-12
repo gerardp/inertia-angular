@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
-import { Link, config, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
 import type { VisitOptions } from '@inertiajs/core'
+import { Link, config, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-custom-config',

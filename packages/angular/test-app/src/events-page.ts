@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core'
-import { Link, router, usePage, type ResolvedComponent } from 'inertia-angular'
 import type { CancelToken, VisitOptions } from '@inertiajs/core'
+import { Link, router, usePage, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-events',
