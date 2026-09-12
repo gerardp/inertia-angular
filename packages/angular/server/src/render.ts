@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common'
 import { createApplication, provideClientHydration } from '@angular/platform-browser'
 import { provideServerRendering, renderApplication } from '@angular/platform-server'
+import { buildSSRBody, resolveServerHead, type InertiaAppSSRResponse, type Page, type PageProps } from '@inertiajs/core'
 import {
   App,
   provideInertiaApp,
@@ -9,7 +10,6 @@ import {
   type InertiaAppProps,
   type ResolvedComponent,
 } from 'inertia-angular'
-import { buildSSRBody, resolveServerHead, type InertiaAppSSRResponse, type Page, type PageProps } from '@inertiajs/core'
 
 export interface RenderAngularAppOptions<SharedProps extends PageProps = PageProps> {
   id?: string

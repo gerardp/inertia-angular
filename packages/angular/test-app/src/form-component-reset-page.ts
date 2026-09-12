@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject, viewChild } from '@angular/core'
-import { Form, type ResolvedComponent } from 'inertia-angular'
 import type { FormDataConvertible } from '@inertiajs/core'
+import { Form, type ResolvedComponent } from 'inertia-angular'
 
 declare global {
   interface Window {

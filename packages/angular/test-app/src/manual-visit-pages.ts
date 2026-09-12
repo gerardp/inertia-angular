@@ -1,4 +1,5 @@
 import { Component, DestroyRef, Directive, afterNextRender, inject, input, signal } from '@angular/core'
+import type { Page } from '@inertiajs/core'
 import {
   Deferred,
   DeferredContent,
@@ -9,7 +10,6 @@ import {
   usePage,
   type ResolvedComponent,
 } from 'inertia-angular'
-import type { Page } from '@inertiajs/core'
 import { WithScrollLayout, WithoutScrollLayout } from './link-pages'
 
 @Component({

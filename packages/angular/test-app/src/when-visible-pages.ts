@@ -1,4 +1,5 @@
 import { Component, computed, input, signal } from '@angular/core'
+import type { ReloadOptions } from '@inertiajs/core'
 import {
   Link,
   WhenVisible,
@@ -9,7 +10,6 @@ import {
   usePage,
   type ResolvedComponent,
 } from 'inertia-angular'
-import type { ReloadOptions } from '@inertiajs/core'
 
 const visibleImports = [WhenVisible, WhenVisibleContent, WhenVisibleFallback] as const
 type LazyData = { text: string }
