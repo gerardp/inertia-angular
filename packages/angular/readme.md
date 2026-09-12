@@ -87,7 +87,7 @@ Single and nested layouts, tuple props, `{ component, props }`, named layouts, c
 <button inertiaLink href="/users" method="post">Create user</button>
 ```
 
-The package also exports signal-based `usePoll`, `usePrefetch`, `useRemember`, `Deferred`, `WhenVisible`, and `InfiniteScroll`. Their listeners, observers, timers, and requests are tied to the current Angular lifecycle.
+The package also exports signal-based `usePoll`, `usePrefetch`, `useRemember`, `Deferred`, `WhenVisible`, and `InfiniteScroll`. Their listeners, observers, and polling timers are tied to the current Angular lifecycle. `usePoll()` returns `start()`, `stop()`, and a read-only `polling()` signal.
 
 ### Visit callbacks and Angular outputs
 
@@ -114,6 +114,8 @@ For native forms, apply `inertiaForm` and use `exportAs` for state and methods:
 ```
 
 `useFormContext()` reads the closest form directive from a descendant. `createForm<T>()` is a compile-time marker for strict-template form field types; it does not create state.
+
+Call `form.cancel()` to cancel a submission. Set `[cancelOnUnmount]="true"` to cancel a pending submission when the form is destroyed; the default is `false`. The `(cancel)` output remains available for notifications. `useForm()` submissions also continue after destruction unless explicitly cancelled.
 
 ## Head
 

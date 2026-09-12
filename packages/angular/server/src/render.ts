@@ -9,7 +9,7 @@ import {
   type InertiaAppProps,
   type ResolvedComponent,
 } from '@inertiajs/angular'
-import { resolveServerHead, type InertiaAppSSRResponse, type Page, type PageProps } from '@inertiajs/core'
+import { buildSSRBody, resolveServerHead, type InertiaAppSSRResponse, type Page, type PageProps } from '@inertiajs/core'
 
 export interface RenderAngularAppOptions<SharedProps extends PageProps = PageProps> {
   id?: string
@@ -47,10 +47,8 @@ export async function renderAngularApp<SharedProps extends PageProps = PageProps
       inertiaHead = elements
     },
   }
-  const json = JSON.stringify(page).replaceAll('/', '\\/')
   const document =
-    options.document ??
-    `<!doctype html><html><head></head><body><script data-page="${id}" type="application/json">${json}</script><div data-server-rendered="true" id="${id}"></div></body></html>`
+    options.document ?? `<!doctype html><html><head></head><body>${buildSSRBody(id, page, '')}</body></html>`
   const html = await renderApplication(
     async (context) => {
       const application = await createApplication(

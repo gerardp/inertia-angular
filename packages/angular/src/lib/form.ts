@@ -1,5 +1,6 @@
 import {
   Directive,
+  DestroyRef,
   ElementRef,
   InjectionToken,
   computed,
@@ -65,6 +66,7 @@ export interface InertiaForm<TForm extends object = Record<string, FormDataConve
   }
   reset<K extends FormDataKeys<TForm>>(...fields: K[]): void
   submit(submitter?: HTMLElement | null): void
+  cancel(): void
   defaults(): void
   getData(submitter?: HTMLElement | null): TForm
   getFormData(submitter?: HTMLElement | null): FormData
@@ -105,6 +107,7 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   implements AfterViewInit, InertiaForm<TForm>
 {
   readonly #element = inject<ElementRef<HTMLFormElement>>(ElementRef)
+  readonly #destroyRef = inject(DestroyRef)
   readonly #form = useForm<Record<string, string>>({}).withPrecognition(
     () => this.resolvedMethod(),
     () => this.#urlAndData()[0],
@@ -127,6 +130,7 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   readonly resetOnSuccess = input<boolean | FormDataKeys<TForm>[]>(false)
   readonly setDefaultsOnSuccess = input(false)
   readonly disableWhileProcessing = input(false)
+  readonly cancelOnUnmount = input(false)
   readonly invalidateCacheTags = input<string | string[]>([])
   readonly validateFiles = input(false)
   readonly validationTimeout = input(1500)
@@ -150,7 +154,7 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   readonly start = output<PendingVisit>()
   readonly progressEvent = output<HttpProgressEvent | undefined>({ alias: 'progress' })
   readonly finish = output<ActiveVisit>()
-  readonly cancel = output<void>()
+  readonly cancelEvent = output<void>({ alias: 'cancel' })
   readonly success = output<Page>()
   readonly error = output<FormDataErrors<TForm>>()
   readonly submitComplete = output<FormComponentOnSubmitCompleteArguments<TForm>>()
@@ -187,6 +191,9 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   }
 
   constructor() {
+    this.#destroyRef.onDestroy(() => {
+      if (this.cancelOnUnmount()) this.cancel()
+    })
     effect(() => {
       const transform = this.transform()
       this.#form.transform((data) => transform(data as unknown as TForm))
@@ -269,31 +276,31 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
       },
       onProgress: (progress) => {
         this.onProgress()?.(progress)
-        this.progressEvent.emit(progress)
+        if (!this.#destroyRef.destroyed) this.progressEvent.emit(progress)
       },
       onFinish: (visit) => {
         this.onFinish()?.(visit)
-        this.finish.emit(visit)
+        if (!this.#destroyRef.destroyed) this.finish.emit(visit)
       },
       onCancel: () => {
         this.onCancel()?.()
-        this.cancel.emit()
+        if (!this.#destroyRef.destroyed) this.cancelEvent.emit()
       },
       onSuccess: async (page) => {
         await this.onSuccess()?.(page)
-        this.success.emit(page)
+        if (!this.#destroyRef.destroyed) this.success.emit(page)
         const submitComplete = {
           reset: (...fields: FormDataKeys<TForm>[]) => this.reset(...fields),
           defaults: () => this.defaults(),
         }
         this.onSubmitComplete()?.(submitComplete)
-        this.submitComplete.emit(submitComplete)
+        if (!this.#destroyRef.destroyed) this.submitComplete.emit(submitComplete)
         maybeReset(this.resetOnSuccess())
         if (this.setDefaultsOnSuccess()) this.defaults()
       },
       onError: (errors) => {
         const result = this.onError()?.(errors)
-        this.error.emit(errors as FormDataErrors<TForm>)
+        if (!this.#destroyRef.destroyed) this.error.emit(errors as FormDataErrors<TForm>)
         maybeReset(this.resetOnError())
         return result
       },
@@ -311,6 +318,10 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
 
   clearErrors<K extends FormDataKeys<TForm>>(...fields: K[]): void {
     this.#form.clearErrors(...(fields as string[]))
+  }
+
+  cancel(): void {
+    this.#form.cancel()
   }
 
   reset<K extends FormDataKeys<TForm>>(...fields: K[]): void {

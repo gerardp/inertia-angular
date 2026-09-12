@@ -234,7 +234,51 @@ class OnceClientVisit {
   }
 }
 
+@Component({
+  selector: 'test-once-instant-a',
+  template: `
+    <p id="foo">Foo: {{ foo() }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    <button type="button" (click)="prefetch('/once-props/instant/b')">Prefetch Page B</button>
+    <button type="button" (click)="visit('/once-props/instant/b')">Instant visit to Page B</button>
+    <button type="button" (click)="prefetch('/once-props/instant/b?deferred=1')">Prefetch Deferred Page B</button>
+    <button type="button" (click)="visit('/once-props/instant/b?deferred=1')">Instant visit to Deferred Page B</button>
+  `,
+})
+class OnceInstantA {
+  readonly foo = input('')
+  readonly bar = input('')
+
+  prefetch(url: string): void {
+    router.prefetch(url, { method: 'get' }, {})
+  }
+
+  visit(url: string): void {
+    router.visit(url, { component: 'OnceProps/InstantPageB' })
+  }
+}
+
+@Component({
+  selector: 'test-once-instant-b',
+  imports: [Deferred, DeferredContent, DeferredFallback],
+  template: `
+    <inertia-deferred data="foo">
+      <ng-template inertiaDeferredFallback>Loading foo...</ng-template>
+      <ng-template inertiaDeferredContent
+        ><p id="foo">Foo: {{ foo() }}</p></ng-template
+      >
+    </inertia-deferred>
+    <p id="bar">Bar: {{ bar() }}</p>
+  `,
+})
+class OnceInstantB {
+  readonly foo = input<string>()
+  readonly bar = input<string>()
+}
+
 export const oncePages: Record<string, ResolvedComponent> = {
+  'OnceProps/InstantPageA': OnceInstantA,
+  'OnceProps/InstantPageB': OnceInstantB,
   'OnceProps/PageA': OncePageA,
   'OnceProps/PageB': OncePageB,
   'OnceProps/PageC': OncePageC,

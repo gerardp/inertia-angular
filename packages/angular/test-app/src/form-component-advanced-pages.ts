@@ -53,6 +53,7 @@ type TestForm = InertiaFormComponent<Record<string, FormDataConvertible>>
       <button type="button" (click)="shouldFail.set(true)">Fail Request</button>
       <button type="button" (click)="shouldDelay.set(true)">Should Delay</button>
       <button type="button" (click)="cancelVisit()">Cancel Visit</button>
+      <button type="button" (click)="form.cancel()">Cancel Submission</button>
       <button type="submit">Submit</button>
     </form>
   `,
@@ -465,7 +466,58 @@ class ViewTransitionPage {
   }
 }
 
+@Component({
+  selector: 'test-form-unmount-cancel',
+  imports: [Form],
+  template: `
+    <h1>Form Unmount Cancel</h1>
+    <div>
+      Events: <span id="events">{{ events().join(',') }}</span>
+    </div>
+    @if (showModal()) {
+      <form
+        inertiaForm
+        [action]="'/form-component/unmount-cancel/' + (cancelOnUnmount() ? 'yes' : 'no')"
+        method="post"
+        [cancelOnUnmount]="cancelOnUnmount()"
+        [onBefore]="onBefore"
+        [onCancelToken]="onCancelToken"
+        [onStart]="onStart"
+        [onCancel]="onCancel"
+        [onSuccess]="onSuccess"
+        [onFinish]="onFinish"
+      >
+        <input name="name" value="John" />
+        <button type="submit">Submit</button>
+      </form>
+    }
+    <button type="button" (click)="showModal.set(false)">Close Modal</button>
+    <button type="button" (click)="closeOnSuccess.set(true)">Close On Success</button>
+  `,
+})
+class UnmountCancelPage {
+  readonly #app = inject(ApplicationRef)
+  readonly cancelOnUnmount = input(false)
+  readonly events = signal<string[]>([])
+  readonly showModal = signal(true)
+  readonly closeOnSuccess = signal(false)
+  readonly log = (event: string): void => this.events.update((events) => [...events, event])
+  readonly onBefore = (): void => this.log('onBefore')
+  readonly onCancelToken = (): void => this.log('onCancelToken')
+  readonly onStart = (): void => this.log('onStart')
+  readonly onCancel = (): void => this.log('onCancel')
+  readonly onFinish = (): void => this.log('onFinish')
+  readonly onSuccess = async (): Promise<void> => {
+    this.log('onSuccess')
+    if (this.closeOnSuccess()) {
+      this.showModal.set(false)
+      await this.#app.whenStable()
+    }
+  }
+}
+
 export const formComponentAdvancedPages: Record<string, ResolvedComponent> = {
+  'FormComponent/UnmountCancel': UnmountCancelPage,
   'FormComponent/Events': EventsPage,
   'FormComponent/Options': OptionsPage,
   'FormComponent/Progress': ProgressPage,

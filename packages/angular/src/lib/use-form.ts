@@ -1,4 +1,3 @@
-import { DestroyRef, inject } from '@angular/core'
 import {
   router,
   UseFormUtils,
@@ -63,7 +62,6 @@ export function useForm<TForm extends FormDataType<TForm>>(): InertiaFormProps<T
 export function useForm<TForm extends FormDataType<TForm>>(
   ...args: UseFormArguments<TForm>
 ): InertiaFormProps<TForm> | InertiaPrecognitiveFormProps<TForm> {
-  const destroyRef = inject(DestroyRef)
   const parsed = UseFormUtils.parseUseFormArguments<TForm>(...args)
   const state = createFormState<TForm>({
     data: parsed.data,
@@ -71,7 +69,6 @@ export function useForm<TForm extends FormDataType<TForm>>(
     precognitionEndpoint: parsed.precognitionEndpoint,
   })
   let cancelToken: CancelToken | null = null
-  let responseReceived = false
   let pendingOptimistic: OptimisticCallback | null = null
   const form = state.form as InertiaFormProps<TForm>
 
@@ -85,7 +82,6 @@ export function useForm<TForm extends FormDataType<TForm>>(
         return options.onCancelToken?.(token)
       },
       onBefore: (visit) => {
-        responseReceived = false
         state.resetBeforeSubmit()
         return options.onBefore?.(visit)
       },
@@ -98,14 +94,12 @@ export function useForm<TForm extends FormDataType<TForm>>(
         return options.onProgress?.(progress)
       },
       onSuccess: async (page) => {
-        responseReceived = true
         state.markAsSuccessful()
         const result = options.onSuccess ? await options.onSuccess(page) : undefined
         if (!state.defaultsWereSet()) state.replaceDefaults(form.data())
         return result
       },
       onError: (errors) => {
-        responseReceived = true
         form.clearErrors()
         form.setError(errors as Parameters<InertiaFormProps<TForm>['setError']>[0])
         return options.onError?.(errors)
@@ -149,8 +143,5 @@ export function useForm<TForm extends FormDataType<TForm>>(
     return form as InertiaPrecognitiveFormProps<TForm>
   }
 
-  destroyRef.onDestroy(() => {
-    if (!responseReceived) cancelToken?.cancel()
-  })
   return state.getPrecognitionEndpoint() ? (form as InertiaPrecognitiveFormProps<TForm>) : form
 }

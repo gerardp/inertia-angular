@@ -11,8 +11,11 @@ class PollHook {
 
 @Component({
   selector: 'test-poll-manual',
-  template:
-    '<button type="button" (click)="poll.start()">Start</button><button type="button" (click)="poll.stop()">Stop</button>',
+  template: `
+    <button type="button" (click)="poll.start()">Start</button>
+    <button type="button" (click)="poll.stop()">Stop</button>
+    <div>Polling: {{ poll.polling() ? 'yes' : 'no' }}</div>
+  `,
 })
 class PollHookManual {
   readonly poll = usePoll(

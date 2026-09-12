@@ -15,8 +15,16 @@ class LinkHost {}
 })
 class MountPrefetchHost {}
 
+@Component({
+  imports: [Link],
+  template: '<a inertiaLink href="/users" prefetch="hover">Users</a>',
+})
+class HoverPrefetchHost {}
+
 describe('Link', () => {
+  afterEach(() => vi.useRealTimers())
   beforeEach(() => {
+    vi.restoreAllMocks()
     TestBed.configureTestingModule({
       imports: [LinkHost],
       providers: [provideZonelessChangeDetection()],
@@ -43,5 +51,21 @@ describe('Link', () => {
 
     expect(prefetch).toHaveBeenCalledOnce()
     expect(prefetch.mock.calls[0]?.[2]).toEqual({ cacheFor: 0, cacheTags: [] })
+  })
+
+  it('cancels a pending hover prefetch when the link is clicked', async () => {
+    const prefetch = vi.spyOn(router, 'prefetch').mockImplementation(() => undefined)
+    const visit = vi.spyOn(router, 'visit').mockImplementation(() => undefined)
+    const fixture = TestBed.createComponent(HoverPrefetchHost)
+    await fixture.whenStable()
+    const anchor = fixture.nativeElement.querySelector('a') as HTMLAnchorElement
+    vi.useFakeTimers()
+
+    anchor.dispatchEvent(new MouseEvent('mouseenter'))
+    anchor.click()
+    vi.runAllTimers()
+
+    expect(visit).toHaveBeenCalledOnce()
+    expect(prefetch).not.toHaveBeenCalled()
   })
 })

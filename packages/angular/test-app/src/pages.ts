@@ -270,7 +270,10 @@ class SsrPageTwo {
   readonly navigatedTo = input(false)
 }
 
-@Component({ selector: 'test-message', template: '<p>{{ message() }}</p>' })
+@Component({
+  selector: 'test-message',
+  template: '<h1 data-testid="ssr-title">SSR Page With Script Element</h1><p>{{ message() }}</p>',
+})
 class MessagePage {
   readonly message = input('')
 }

@@ -142,6 +142,7 @@ export class Link implements OnInit {
   }
 
   handleClick(event: MouseEvent): void {
+    clearTimeout(this.#hoverTimeout)
     if (!shouldIntercept(event)) return
     event.preventDefault()
     if (!this.#prefetchModes().includes('click')) this.#visit()
