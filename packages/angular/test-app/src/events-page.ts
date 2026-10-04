@@ -142,6 +142,10 @@ import { Link, router, usePage, type ResolvedComponent } from 'inertia-angular'
         Success Event Link (delaying onFinish w/ Promise)
       </button>
 
+      <button inertiaLink href="/events/flash" method="post" (flash)="linkFlash($event)" class="link-flash">
+        Flash Event Link
+      </button>
+
       <a href="#" class="http-exception" (click)="httpExceptionVisit($event)">HTTP Exception Event</a>
       <a href="#" class="http-exception-prevent" (click)="httpExceptionPreventVisit($event)"
         >HTTP Exception Event (Prevent)</a
@@ -155,11 +159,47 @@ import { Link, router, usePage, type ResolvedComponent } from 'inertia-angular'
         (click)="httpExceptionInertiaResponsePreventVisit($event)"
         >HTTP Exception Event (Inertia Response Prevent)</a
       >
+      <button
+        inertiaLink
+        href="/non-inertia"
+        method="post"
+        [onHttpException]="linkHttpException"
+        class="link-http-exception"
+      >
+        HTTP Exception Event Link
+      </button>
+      <button
+        inertiaLink
+        href="/non-inertia"
+        method="post"
+        [onHttpException]="linkHttpExceptionPrevent"
+        class="link-http-exception-prevent"
+      >
+        HTTP Exception Event Link (Prevent)
+      </button>
 
       <a href="#" class="network-error" (click)="networkErrorVisit($event)">Network Error Event</a>
       <a href="#" class="network-error-prevent" (click)="networkErrorPreventVisit($event)"
         >Network Error Event (Prevent)</a
       >
+      <button
+        inertiaLink
+        href="/disconnect"
+        method="post"
+        [onNetworkError]="linkNetworkError"
+        class="link-network-error"
+      >
+        Network Error Event Link
+      </button>
+      <button
+        inertiaLink
+        href="/disconnect"
+        method="post"
+        [onNetworkError]="linkNetworkErrorPrevent"
+        class="link-network-error-prevent"
+      >
+        Network Error Event Link (Prevent)
+      </button>
 
       <a href="#" class="finish" (click)="finishVisit($event)">Finish Event</a>
       <button inertiaLink [href]="page().url" method="post" [onFinish]="linkFinishWithVisit" class="link-finish">
@@ -215,6 +255,17 @@ class EventsPage {
   readonly linkSuccessPromise = () => this.#callbackPromise('linkOnSuccess')
   readonly linkFinish = () => this.#alert('linkOnFinish')
   readonly linkFinishWithVisit = (visit: unknown) => this.#alert('linkOnFinish', visit)
+  readonly linkFlash = (flash: unknown) => this.#alert('linkOnFlash', flash)
+  readonly linkHttpException = (response: { status: number }) => this.#alert('linkOnHttpException', response.status)
+  readonly linkHttpExceptionPrevent = () => {
+    this.#alert('linkOnHttpException')
+    return false
+  }
+  readonly linkNetworkError = (error: Error) => this.#alert('linkOnNetworkError', error.message)
+  readonly linkNetworkErrorPrevent = () => {
+    this.#alert('linkOnNetworkError')
+    return false
+  }
   readonly linkPrefetching = (visit: unknown) => this.#alert('linkOnPrefetching', visit)
   readonly linkPrefetched = (response: unknown, visit: unknown) => this.#alert('linkOnPrefetched', response, visit)
 

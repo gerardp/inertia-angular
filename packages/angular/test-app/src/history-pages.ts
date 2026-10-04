@@ -67,9 +67,15 @@ class HistoryQuota {
   }
 }
 
+@Component({ selector: 'test-history-version-reload', template: '<div id="deploy">{{ deploy() }}</div>' })
+class HistoryVersionReload {
+  readonly deploy = input('')
+}
+
 export const historyPages: Record<string, ResolvedComponent> = {
   'History/Page': HistoryPage,
   'History/Version': HistoryVersion,
   HistoryThrottle,
   'HistoryQuota/Page': HistoryQuota,
+  HistoryVersionReload,
 }

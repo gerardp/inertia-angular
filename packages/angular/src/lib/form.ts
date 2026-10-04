@@ -30,6 +30,7 @@ import {
   type FormDataConvertible,
   type FormDataErrors,
   type FormDataKeys,
+  type HttpExceptionResponse,
   type HttpProgressEvent,
   type Method,
   type Page,
@@ -147,6 +148,9 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   readonly onCancel = input<VisitCallbacks['onCancel'] | null>(null)
   readonly onSuccess = input<VisitCallbacks['onSuccess'] | null>(null)
   readonly onError = input<VisitCallbacks['onError'] | null>(null)
+  readonly onHttpException = input<VisitCallbacks['onHttpException'] | null>(null)
+  readonly onNetworkError = input<VisitCallbacks['onNetworkError'] | null>(null)
+  readonly onFlash = input<VisitCallbacks['onFlash'] | null>(null)
   readonly onSubmitComplete = input<InertiaFormProps<TForm>['onSubmitComplete'] | null>(null)
 
   readonly cancelToken = output<CancelToken>()
@@ -157,6 +161,9 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
   readonly cancelEvent = output<void>({ alias: 'cancel' })
   readonly success = output<Page>()
   readonly error = output<FormDataErrors<TForm>>()
+  readonly httpException = output<HttpExceptionResponse>()
+  readonly networkError = output<Error>()
+  readonly flash = output<Page['flash']>()
   readonly submitComplete = output<FormComponentOnSubmitCompleteArguments<TForm>>()
 
   readonly isDirty = this.#isDirty.asReadonly()
@@ -303,6 +310,20 @@ export class Form<TForm extends object = Record<string, FormDataConvertible>>
         if (!this.#destroyRef.destroyed) this.error.emit(errors as FormDataErrors<TForm>)
         maybeReset(this.resetOnError())
         return result
+      },
+      onHttpException: (response) => {
+        const result = this.onHttpException()?.(response)
+        if (!this.#destroyRef.destroyed) this.httpException.emit(response)
+        return result
+      },
+      onNetworkError: (error) => {
+        const result = this.onNetworkError()?.(error)
+        if (!this.#destroyRef.destroyed) this.networkError.emit(error)
+        return result
+      },
+      onFlash: (flash) => {
+        this.onFlash()?.(flash)
+        if (!this.#destroyRef.destroyed) this.flash.emit(flash)
       },
       ...this.options(),
     }

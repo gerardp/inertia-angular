@@ -21,6 +21,16 @@ class MountPrefetchHost {}
 })
 class HoverPrefetchHost {}
 
+@Component({
+  imports: [Link],
+  template:
+    '<button inertiaLink href="/users" method="post" [onHttpException]="prevent" (httpException)="emitted = true">Users</button>',
+})
+class HttpExceptionHost {
+  emitted = false
+  readonly prevent = () => false as const
+}
+
 describe('Link', () => {
   afterEach(() => vi.useRealTimers())
   beforeEach(() => {
@@ -67,5 +77,17 @@ describe('Link', () => {
 
     expect(visit).toHaveBeenCalledOnce()
     expect(prefetch).not.toHaveBeenCalled()
+  })
+
+  it('returns the onHttpException result to core and emits the notification output', async () => {
+    const visit = vi.spyOn(router, 'visit').mockImplementation(() => undefined)
+    const fixture = TestBed.createComponent(HttpExceptionHost)
+    await fixture.whenStable()
+
+    ;(fixture.nativeElement.querySelector('button') as HTMLButtonElement).click()
+    const result = visit.mock.calls[0]?.[1]?.onHttpException?.({ status: 200 } as never)
+
+    expect(result).toBe(false)
+    expect(fixture.componentInstance.emitted).toBe(true)
   })
 })

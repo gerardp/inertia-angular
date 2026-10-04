@@ -12,7 +12,7 @@ pnpm add inertia-angular @angular/common @angular/core @angular/platform-browser
 
 `@inertiajs/core` is installed automatically. Angular `>=22.1 <23` is supported by this release.
 
-The version number tracks Inertia itself, so `inertia-angular@3.7.1` targets `@inertiajs/core@3.7.x`. A patch release of this package can run ahead of Inertia's own when it only fixes the Angular side.
+The version number tracks Inertia itself, so `inertia-angular@3.8.0` targets `@inertiajs/core@3.8.x`. A patch release of this package can run ahead of Inertia's own when it only fixes the Angular side.
 
 Do not install Angular Router: Inertia owns navigation, URL history, scroll restoration, cached pages, and visits.
 
@@ -111,9 +111,18 @@ Single and nested layouts, tuple props, `{ component, props }`, named layouts, c
 
 The package also exports signal-based `usePoll`, `usePrefetch`, `useRemember`, `Deferred`, `WhenVisible`, and `InfiniteScroll`. Their listeners, observers, and polling timers are tied to the current Angular lifecycle. `usePoll()` returns `start()`, `stop()`, and a read-only `polling()` signal.
 
+`WhenMounted` renders its fallback on the server and during hydration, then swaps in the content. Without SSR, and on later visits, the content renders immediately. Use it for content that reads browser-only APIs:
+
+```html
+<inertia-when-mounted>
+  <ng-template inertiaWhenMountedFallback>Loading…</ng-template>
+  <ng-template inertiaWhenMountedContent><app-chart /></ng-template>
+</inertia-when-mounted>
+```
+
 ### Visit callbacks and Angular outputs
 
-`Link` and `Form` expose Inertia visit callbacks as function-valued signal inputs. Use these inputs when the callback controls the visit: `onBefore` may synchronously return `false` to cancel it, and a promise returned by `onSuccess` delays completion.
+`Link` and `Form` expose Inertia visit callbacks as function-valued signal inputs. Use these inputs when the callback controls the visit: `onBefore` may synchronously return `false` to cancel it, `onHttpException` and `onNetworkError` may return `false` to suppress the global event, and a promise returned by `onSuccess` delays completion.
 
 ```html
 <button inertiaLink href="/users" [onBefore]="confirmVisit" [onSuccess]="afterSuccess">Users</button>

@@ -22,6 +22,7 @@ import {
   type CacheForOption,
   type CancelToken,
   type Errors,
+  type HttpExceptionResponse,
   type LinkComponentBaseProps,
   type LinkPrefetchOption,
   type Method,
@@ -89,6 +90,9 @@ export class Link implements OnInit {
   readonly onCancel = input<VisitCallbacks['onCancel'] | null>(null)
   readonly onSuccess = input<VisitCallbacks['onSuccess'] | null>(null)
   readonly onError = input<VisitCallbacks['onError'] | null>(null)
+  readonly onHttpException = input<VisitCallbacks['onHttpException'] | null>(null)
+  readonly onNetworkError = input<VisitCallbacks['onNetworkError'] | null>(null)
+  readonly onFlash = input<VisitCallbacks['onFlash'] | null>(null)
   readonly onPrefetching = input<VisitCallbacks['onPrefetching'] | null>(null)
   readonly onPrefetched = input<VisitCallbacks['onPrefetched'] | null>(null)
 
@@ -100,6 +104,9 @@ export class Link implements OnInit {
   readonly cancel = output<void>()
   readonly success = output<Page>()
   readonly error = output<Errors>()
+  readonly httpException = output<HttpExceptionResponse>()
+  readonly networkError = output<Error>()
+  readonly flash = output<Page['flash']>()
   readonly prefetching = output<PendingVisit>()
   readonly prefetched = output<{ response: unknown; visit: PendingVisit }>()
 
@@ -247,6 +254,20 @@ export class Link implements OnInit {
         const result = this.onError()?.(errors)
         this.error.emit(errors)
         return result
+      },
+      onHttpException: (response) => {
+        const result = this.onHttpException()?.(response)
+        this.httpException.emit(response)
+        return result
+      },
+      onNetworkError: (error) => {
+        const result = this.onNetworkError()?.(error)
+        this.networkError.emit(error)
+        return result
+      },
+      onFlash: (flash) => {
+        this.onFlash()?.(flash)
+        this.flash.emit(flash)
       },
     })
   }

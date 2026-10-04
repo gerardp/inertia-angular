@@ -73,22 +73,24 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
     router.decryptHistory().catch(() => undefined),
   ])
 
-  const props: InertiaAppProps<SharedProps> = {
-    initialPage,
-    initialComponent,
-    resolveComponent,
-    ...(title ? { titleCallback: title } : {}),
-    ...(layout ? { defaultLayout: layout } : {}),
-    ...(serverHead !== undefined ? { serverHead } : {}),
-  }
-
   const el = document.getElementById(id)
   if (!el) {
     throw new Error(`Unable to find the Inertia root element #${id}.`)
   }
 
+  const serverRendered = el.hasAttribute('data-server-rendered')
+  const props: InertiaAppProps<SharedProps> = {
+    initialPage,
+    initialComponent,
+    resolveComponent,
+    serverRendered,
+    ...(title ? { titleCallback: title } : {}),
+    ...(layout ? { defaultLayout: layout } : {}),
+    ...(serverHead !== undefined ? { serverHead } : {}),
+  }
+
   const providers: Array<Provider | EnvironmentProviders> = [
-    ...(el.hasAttribute('data-server-rendered') ? [provideClientHydration()] : []),
+    ...(serverRendered ? [provideClientHydration()] : []),
     provideInertiaApp(props as InertiaAppProps<PageProps>, withApp?.({ ssr: false, page: initialPage }) ?? []),
   ]
 

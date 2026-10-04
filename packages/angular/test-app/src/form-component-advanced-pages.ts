@@ -28,10 +28,19 @@ type TestForm = InertiaFormComponent<Record<string, FormDataConvertible>>
       [onCancel]="onCancel"
       [onSuccess]="onSuccess"
       [onError]="onError"
+      [onHttpException]="onHttpException"
+      [onNetworkError]="onNetworkError"
+      [onFlash]="onFlash"
     >
       <h1>Form Events & State</h1>
       <div>
         Events: <span id="events">{{ events().join(',') }}</span>
+      </div>
+      <div>
+        Global events: <span id="global-events">{{ globalEvents().join(',') }}</span>
+      </div>
+      <div>
+        Flash: <span id="flash">{{ flashData() }}</span>
       </div>
       <div>
         Processing: <span id="processing">{{ form.processing() }}</span>
@@ -50,8 +59,12 @@ type TestForm = InertiaFormComponent<Record<string, FormDataConvertible>>
       </div>
       <input type="file" name="avatar" id="avatar" />
       <button type="button" (click)="cancelInOnBefore.set(true)">Cancel in onBefore</button>
-      <button type="button" (click)="shouldFail.set(true)">Fail Request</button>
-      <button type="button" (click)="shouldDelay.set(true)">Should Delay</button>
+      <button type="button" (click)="action.set('/form-component/events/errors')">Fail Request</button>
+      <button type="button" (click)="action.set('/form-component/events/delay')">Should Delay</button>
+      <button type="button" (click)="action.set('/form-component/events/flash')">Return Flash</button>
+      <button type="button" (click)="action.set('/non-inertia')">Trigger HTTP Exception</button>
+      <button type="button" (click)="action.set('/disconnect')">Trigger Network Error</button>
+      <button type="button" (click)="preventErrorEvents.set(true)">Prevent Error Events</button>
       <button type="button" (click)="cancelVisit()">Cancel Visit</button>
       <button type="button" (click)="form.cancel()">Cancel Submission</button>
       <button type="submit">Submit</button>
@@ -60,16 +73,11 @@ type TestForm = InertiaFormComponent<Record<string, FormDataConvertible>>
 })
 class EventsPage {
   readonly events = signal<string[]>([])
+  readonly globalEvents = signal<string[]>([])
+  readonly flashData = signal('')
   readonly cancelInOnBefore = signal(false)
-  readonly shouldFail = signal(false)
-  readonly shouldDelay = signal(false)
-  readonly action = computed(() =>
-    this.shouldFail()
-      ? '/form-component/events/errors'
-      : this.shouldDelay()
-        ? '/form-component/events/delay'
-        : '/form-component/events/success',
-  )
+  readonly preventErrorEvents = signal(false)
+  readonly action = signal('/form-component/events/success')
   #cancelToken: CancelToken | null = null
   readonly log = (event: string): void => this.events.update((events) => [...events, event])
   readonly onBefore = (): boolean | void => {
@@ -89,6 +97,31 @@ class EventsPage {
   readonly onCancel = (): void => this.log('onCancel')
   readonly onSuccess = (): void => this.log('onSuccess')
   readonly onError = (): void => this.log('onError')
+  readonly onHttpException = (): boolean | void => {
+    this.log('onHttpException')
+    if (this.preventErrorEvents()) return false
+  }
+  readonly onNetworkError = (): boolean | void => {
+    this.log('onNetworkError')
+    if (this.preventErrorEvents()) return false
+  }
+  readonly onFlash = (flash: Page['flash']): void => {
+    this.log('onFlash')
+    this.flashData.set(JSON.stringify(flash))
+  }
+
+  constructor() {
+    const record = (event: string) => () => this.globalEvents.update((events) => [...events, event])
+    const recordHttpException = record('httpException')
+    const recordNetworkError = record('networkError')
+    document.addEventListener('inertia:httpException', recordHttpException)
+    document.addEventListener('inertia:networkError', recordNetworkError)
+    inject(DestroyRef).onDestroy(() => {
+      document.removeEventListener('inertia:httpException', recordHttpException)
+      document.removeEventListener('inertia:networkError', recordNetworkError)
+    })
+  }
+
   cancelVisit(): void {
     this.#cancelToken?.cancel()
     this.#cancelToken = null

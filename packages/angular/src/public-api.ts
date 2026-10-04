@@ -43,6 +43,7 @@ export {
   DeferredRescue,
   type DeferredTemplateContext,
 } from './lib/deferred'
+export { WhenMounted, WhenMountedContent, WhenMountedFallback } from './lib/when-mounted'
 export {
   WhenVisible,
   WhenVisibleContent,

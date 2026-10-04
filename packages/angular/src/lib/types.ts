@@ -44,6 +44,7 @@ export type InertiaAppProps<SharedProps extends PageProps = PageProps> = {
   defaultLayout?: (name: string, page: Page) => unknown
   serverHead?: ServerHeadOption
   onHeadUpdate?: (elements: string[]) => void
+  serverRendered?: boolean
 }
 
 export type SetupOptions<SharedProps extends PageProps = PageProps> = {

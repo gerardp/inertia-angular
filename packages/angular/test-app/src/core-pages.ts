@@ -1,6 +1,6 @@
-import { Component, DestroyRef, afterNextRender, inject, input } from '@angular/core'
+import { Component, DestroyRef, afterNextRender, computed, inject, input, signal } from '@angular/core'
 import type { VisitOptions } from '@inertiajs/core'
-import { Link, router, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
+import { http, Link, router, useForm, usePage, type ResolvedComponent } from 'inertia-angular'
 
 @Component({
   selector: 'test-merge-props',
@@ -253,6 +253,136 @@ class ViewTransitionFormErrors {
   }
 }
 
+@Component({
+  selector: 'test-bigint',
+  template: `
+    <p>
+      safe: <span id="safe">{{ safe() }}</span> (<span id="safe-type">{{ typeof safe() }}</span
+      >)
+    </p>
+    <p>
+      big: <span id="big">{{ big() }}</span> (<span id="big-type">{{ typeof big() }}</span
+      >)
+    </p>
+    <p>
+      negative: <span id="negative">{{ negative() }}</span>
+    </p>
+    <p>
+      huge: <span id="huge">{{ huge() }}</span>
+    </p>
+    <p>
+      nested: <span id="nested">{{ nested().deep.join(',') }}</span>
+    </p>
+    @if (collision()) {
+      <p>
+        collision: <span id="collision">{{ collisionValue() }}</span> (<span id="collision-type">{{
+          typeof collision()
+        }}</span
+        >)
+      </p>
+    }
+    @if (echoedType()) {
+      <p>
+        echoed type: <span id="echoed-type">{{ echoedType() }}</span>
+      </p>
+    }
+    <button type="button" (click)="router.get('/bigint/reload')">Load reload data</button>
+    <button type="button" (click)="router.get('/bigint/collision')">Load collision data</button>
+    <button type="button" (click)="submitEcho()">Submit echo</button>
+  `,
+})
+class BigIntPage {
+  readonly router = router
+  readonly safe = input(0)
+  readonly big = input<bigint>(0n)
+  readonly negative = input<bigint>(0n)
+  readonly nested = input<{ deep: bigint[] }>({ deep: [] })
+  readonly huge = input<bigint>(0n)
+  readonly collision = input<bigint | { $bigint: string } | undefined>()
+  readonly echoedType = input<string>()
+  readonly collisionValue = computed(() => {
+    const collision = this.collision()
+    return typeof collision === 'object' ? collision.$bigint : String(collision)
+  })
+
+  // Angular templates have no BigInt literal syntax
+  submitEcho(): void {
+    router.post('/bigint/echo', { value: 111222333444555666n })
+  }
+}
+
+@Component({
+  selector: 'test-http-cancellation',
+  template: `
+    <h1>HTTP Cancellation</h1>
+    <button type="button" (click)="requestWithAbortedSignal()">Request With Aborted Signal</button>
+    <button type="button" (click)="cancelDuringPreparation()">Cancel During Preparation</button>
+    <button type="button" (click)="visitCancelledBeforeSend()">Visit Cancelled Before Send</button>
+    <button type="button" (click)="prefetchCancelledBeforeSend()">Prefetch Cancelled Before Send</button>
+    <div>
+      Log: <span id="log">{{ messages().join(',') }}</span>
+    </div>
+  `,
+})
+class HttpCancellationPage {
+  readonly messages = signal<string[]>([])
+
+  constructor() {
+    afterNextRender(() => (window._http_cancellation_log = []))
+  }
+
+  #log(message: string): void {
+    window._http_cancellation_log.push(message)
+    this.messages.set([...window._http_cancellation_log])
+  }
+
+  async requestWithAbortedSignal(): Promise<void> {
+    const controller = new AbortController()
+    const off = http.onError((error) => this.#log(`error:${error.name}`))
+    controller.abort()
+    await this.#request('/dump/get?request=aborted', controller.signal, off)
+  }
+
+  async cancelDuringPreparation(): Promise<void> {
+    const controller = new AbortController()
+    const off = http.onRequest(async (config) => {
+      controller.abort()
+      return config
+    })
+    await this.#request('/dump/get?request=preparing', controller.signal, off)
+  }
+
+  visitCancelledBeforeSend(): void {
+    router.visit('/dump/get?request=old', {
+      async: true,
+      onCancelToken: (token) => token.cancel(),
+      onCancel: () => this.#log('old:cancel'),
+      onFinish: () => this.#log('old:finish'),
+      onSuccess: () => this.#log('old:success'),
+    })
+    router.visit('/dump/get?request=current', { async: true, onSuccess: () => this.#log('current:success') })
+  }
+
+  prefetchCancelledBeforeSend(): void {
+    const off = http.onError((error) => {
+      this.#log(`prefetch:${error.name}`)
+      off()
+    })
+    router.prefetch('/dump/get?request=prefetch', { onCancelToken: (token) => token.cancel() })
+  }
+
+  async #request(url: string, signal: AbortSignal, off: () => void): Promise<void> {
+    try {
+      await http.getClient().request({ method: 'get', url, signal })
+      this.#log('outcome:resolved')
+    } catch (error) {
+      this.#log(`outcome:${(error as Error).name}`)
+    } finally {
+      off()
+    }
+  }
+}
+
 export const corePages: Record<string, ResolvedComponent> = {
   MergeProps: MergePropsPage,
   MergeNestedProps: MergeNestedPropsPage,
@@ -265,4 +395,6 @@ export const corePages: Record<string, ResolvedComponent> = {
   'ViewTransition/PageA': ViewTransitionA,
   'ViewTransition/PageB': ViewTransitionB,
   'ViewTransition/FormErrors': ViewTransitionFormErrors,
+  BigInt: BigIntPage,
+  HttpCancellation: HttpCancellationPage,
 }

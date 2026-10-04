@@ -14,6 +14,7 @@ declare module '@inertiajs/core' {
 
 declare global {
   interface Window {
+    _http_cancellation_log: string[]
     initialPage?: Page
     _inertia_request_dump: {
       headers: Record<string, string>

@@ -626,6 +626,7 @@ class ScrollAfterRender {
   template: `
     <div scroll-region id="scroll-container" style="height: 300px; overflow-y: auto; border: 1px solid #ccc">
       <div class="page-number">Page: {{ page() }}</div>
+      <div id="scroll-baseline">Scroll baseline: {{ scrollBaseline }}</div>
       <button id="scroll-and-navigate" type="button" (click)="start()">Start scrolling and navigate</button>
       @for (item of items; track item) {
         <div style="padding: 20px; border-bottom: 1px solid #eee">Item {{ item }}</div>
@@ -636,6 +637,9 @@ class ScrollAfterRender {
 class ScrollRegionPreserveUrl {
   readonly page = input(1)
   readonly items = Array.from({ length: 50 }, (_, index) => index + 1)
+  // The scroll position the container jumps to before the continuous scrolling starts, so the
+  // preserved position never depends on how many interval ticks the browser managed to run.
+  readonly scrollBaseline = 100
   #interval: ReturnType<typeof setInterval> | undefined
 
   constructor() {
@@ -644,6 +648,8 @@ class ScrollRegionPreserveUrl {
 
   start(): void {
     const container = document.getElementById('scroll-container')!
+    container.scrollTop = this.scrollBaseline
+    // Keep scrolling while the visit is in flight
     this.#interval = setInterval(() => (container.scrollTop += 10), 10)
     setTimeout(() => {
       router.visit(`/scroll-region-preserve-url/${this.page() === 1 ? 2 : 1}`, {

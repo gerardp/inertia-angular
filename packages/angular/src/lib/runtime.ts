@@ -1,5 +1,14 @@
 import { isPlatformBrowser } from '@angular/common'
-import { DestroyRef, Injectable, PLATFORM_ID, inject, signal, type Signal, type WritableSignal } from '@angular/core'
+import {
+  DestroyRef,
+  Injectable,
+  PLATFORM_ID,
+  afterNextRender,
+  inject,
+  signal,
+  type Signal,
+  type WritableSignal,
+} from '@angular/core'
 import {
   createHeadManager,
   createLayoutPropsStore,
@@ -31,6 +40,8 @@ export class InertiaRuntime {
   readonly #key = signal<number | null>(null)
   readonly #layoutPropsStore: LayoutPropsStore = createLayoutPropsStore()
   readonly #layoutProps = signal(this.#layoutPropsStore.get())
+  // Scoped per app instance so multiple Inertia roots on one page don't clobber each other
+  readonly #hydrated = signal(this.#isBrowser && !this.#appProps.serverRendered)
   readonly #cleanup: Array<() => void> = []
   readonly #rendererReady: Promise<void>
   #resolveRendererReady: (() => void) | undefined
@@ -42,6 +53,7 @@ export class InertiaRuntime {
   readonly component = this.#component.asReadonly()
   readonly key = this.#key.asReadonly()
   readonly layoutProps = this.#layoutProps.asReadonly()
+  readonly hydrated = this.#hydrated.asReadonly()
   readonly headManager: HeadManager
 
   constructor() {
@@ -57,6 +69,8 @@ export class InertiaRuntime {
     )
 
     if (this.#isBrowser) {
+      afterNextRender(() => this.#hydrated.set(true))
+
       router.init<ResolvedComponent>({
         initialPage: this.#page(),
         resolveComponent: this.#appProps.resolveComponent,

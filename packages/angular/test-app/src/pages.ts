@@ -1,4 +1,4 @@
-import { Component, InjectionToken, Signal, afterNextRender, inject, input } from '@angular/core'
+import { Component, InjectionToken, Signal, afterNextRender, computed, inject, input } from '@angular/core'
 import type { Method, Page } from '@inertiajs/core'
 import { Head, InfiniteScroll, LayoutOutlet, Link, usePage, type ResolvedComponent } from 'inertia-angular'
 import { clientVisitPages } from './client-visit-pages'
@@ -30,6 +30,7 @@ import { precognitionPages } from './precognition-pages'
 import { prefetchPages } from './prefetch-pages'
 import { rememberPages } from './remember-pages'
 import { useHttpPages } from './use-http-pages'
+import { whenMountedPages } from './when-mounted-pages'
 import { whenVisiblePages } from './when-visible-pages'
 
 export type WithAppValue = {
@@ -248,6 +249,7 @@ class UsePageTwo {
     <p data-testid="count">Count: {{ count() }}</p>
     <p data-testid="page-url">URL: {{ page().url }}</p>
     <a inertiaLink href="/ssr/page2" data-testid="navigate-link">Page 2</a>
+    <a inertiaLink href="/ssr/when-mounted" data-testid="to-when-mounted-link">Navigate to WhenMounted page</a>
   `,
 })
 class SsrPageOne {
@@ -268,6 +270,34 @@ class SsrPageOne {
 })
 class SsrPageTwo {
   readonly navigatedTo = input(false)
+}
+
+@Component({
+  selector: 'test-ssr-bigint',
+  template: `
+    <h1 data-testid="ssr-title">SSR Big Integers</h1>
+    <p data-testid="big">big: {{ big() }}</p>
+    <p data-testid="big-type">type: {{ typeof big() }}</p>
+    <p data-testid="nested">nested: {{ nested().deep.join(',') }}</p>
+  `,
+})
+class SsrBigInt {
+  readonly big = input<bigint>(0n)
+  readonly nested = input<{ deep: bigint[] }>({ deep: [] })
+}
+
+@Component({
+  selector: 'test-ssr-multibyte-body',
+  template: `
+    <h1 data-testid="ssr-title">SSR Multi-Byte Body</h1>
+    <p data-testid="character-count">Characters: {{ text().length }}</p>
+    <p data-testid="replacement-count">Replacement characters: {{ replacementCount() }}</p>
+    <p data-testid="text">{{ text() }}</p>
+  `,
+})
+class SsrMultiByteBody {
+  readonly text = input('')
+  readonly replacementCount = computed(() => (this.text().match(/\uFFFD/g) ?? []).length)
 }
 
 @Component({
@@ -368,6 +398,7 @@ export const pages: Record<string, ResolvedComponent> = {
   ...precognitionPages,
   ...rememberPages,
   ...useHttpPages,
+  ...whenMountedPages,
   ...whenVisiblePages,
   Home,
   ScrollableParent: ScrollableParentPage,
@@ -379,6 +410,8 @@ export const pages: Record<string, ResolvedComponent> = {
   'UsePage/Page2': UsePageTwo,
   'SSR/Page1': SsrPageOne,
   'SSR/Page2': SsrPageTwo,
+  'SSR/BigInt': SsrBigInt,
+  'SSR/MultiByteBody': SsrMultiByteBody,
   'SSR/PageWithScriptElement': MessagePage,
   'SSR/HeadTitle': HeadTitle,
   'SSR/HeadWithXssTitle': HeadWithXssTitle,

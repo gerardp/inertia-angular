@@ -170,7 +170,9 @@ type Contact = { id: number; name: string; is_favorite: boolean }
           ><button class="toggle-error-btn" type="button" (click)="toggle(contact, 500, true)">Toggle (Error)</button
           ><button class="toggle-slow-btn" type="button" (click)="toggle(contact, 1000)">Toggle (Slow)</button
           ><button class="toggle-slow-error-btn" type="button" (click)="toggle(contact, 1000, true)">
-            Toggle (Slow Error)
+            Toggle (Slow Error)</button
+          ><button class="toggle-held-btn" type="button" (click)="toggle(contact, 500, false, 1000)">
+            Toggle (Held)
           </button>
         </div>
       }
@@ -185,7 +187,7 @@ class OptimisticRollback {
   readonly contacts = input.required<Contact[]>()
   readonly errors = input<{ toggle?: string }>()
   readonly router = router
-  toggle(contact: Contact, delay = 500, error = false): void {
+  toggle(contact: Contact, delay = 500, error = false, hold = 0): void {
     router
       .optimistic<{ contacts: Contact[] }>((props) => ({
         contacts: props.contacts.map((item) =>
@@ -193,7 +195,7 @@ class OptimisticRollback {
         ),
       }))
       .post(
-        `/optimistic/rollback/toggle/${contact.id}?delay=${delay}&error=${error ? '1' : '0'}`,
+        `/optimistic/rollback/toggle/${contact.id}?delay=${delay}&error=${error ? '1' : '0'}&hold=${hold}`,
         {},
         { preserveScroll: true },
       )

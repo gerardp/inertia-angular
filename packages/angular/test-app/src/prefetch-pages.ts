@@ -247,6 +247,81 @@ class PrefetchTags {
   }
 }
 
+@Component({
+  selector: 'test-prefetch-cancelled',
+  template: `
+    <button type="button" (click)="prefetch()">Prefetch</button>
+    <button type="button" (click)="prefetchWithReplacement()">Prefetch With Replacement</button>
+    <button type="button" (click)="prefetchAndCancel()">Prefetch And Cancel</button>
+    <button type="button" (click)="prefetchAndCancelWithReplacement()">Prefetch And Cancel With Replacement</button>
+    <button type="button" (click)="cancelPrefetch()">Cancel Prefetch</button>
+    <button type="button" (click)="router.flush(url)">Flush</button>
+    <button type="button" (click)="router.flushByCacheTags('example')">Flush By Cache Tags</button>
+    <button type="button" (click)="router.flushAll()">Flush All</button>
+    <button type="button" (click)="visit()">Visit</button>
+    <div>
+      Prefetching: <span id="prefetch-status">{{ prefetchId() ? 'yes' : 'no' }}</span>
+    </div>
+    <div>
+      Prefetch ID: <span id="prefetch-id">{{ prefetchId() }}</span>
+    </div>
+    <div>
+      Cached: <span id="cache-status">{{ cached() ? 'yes' : 'no' }}</span>
+    </div>
+    <div>
+      Visit events: <span id="visit-events">{{ events().join(',') }}</span>
+    </div>
+  `,
+})
+class PrefetchCancelled {
+  readonly router = router
+  readonly url = '/prefetch/swr/1'
+  readonly prefetchId = signal('')
+  readonly cached = signal(false)
+  readonly events = signal<string[]>([])
+  #cancelToken: { cancel: () => void } | null = null
+
+  constructor() {
+    const timer = setInterval(() => {
+      this.prefetchId.set(router.getPrefetching(this.url)?.params.id ?? '')
+      this.cached.set(router.getCached(this.url) !== null)
+    }, 50)
+    inject(DestroyRef).onDestroy(() => clearInterval(timer))
+  }
+
+  prefetch(): void {
+    router.prefetch(this.url, { onCancelToken: (token) => (this.#cancelToken = token) }, { cacheTags: ['example'] })
+  }
+
+  prefetchWithReplacement(): void {
+    router.prefetch(this.url, {
+      onCancelToken: (token) => (this.#cancelToken = token),
+      onCancel: () => router.prefetch(this.url),
+    })
+  }
+
+  prefetchAndCancel(): void {
+    router.prefetch(this.url, { onCancelToken: (token) => token.cancel() })
+  }
+
+  prefetchAndCancelWithReplacement(): void {
+    router.prefetch(this.url, {
+      onCancelToken: (token) => token.cancel(),
+      onCancel: () => router.prefetch(this.url),
+    })
+  }
+
+  cancelPrefetch(): void {
+    this.#cancelToken?.cancel()
+    this.#cancelToken = null
+  }
+
+  visit(): void {
+    const push = (event: string) => () => this.events.update((events) => [...events, event])
+    router.visit(this.url, { onCancel: push('cancel'), onFinish: push('finish'), onSuccess: push('success') })
+  }
+}
+
 export const prefetchPages: Record<string, ResolvedComponent> = {
   'Prefetch/Page': PrefetchPage,
   'Prefetch/SWR': PrefetchSwr,
@@ -258,4 +333,5 @@ export const prefetchPages: Record<string, ResolvedComponent> = {
   'Prefetch/NavigateEvent': PrefetchNavigateEvent,
   'Prefetch/NavigateEventTarget': PrefetchNavigateTarget,
   'Prefetch/Tags': PrefetchTags,
+  'Prefetch/Cancelled': PrefetchCancelled,
 }
