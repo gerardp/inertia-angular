@@ -7,9 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 For changes prior to v1.0.0, see the [legacy releases](https://legacy.inertiajs.com/releases).
 
-## [Unreleased](https://github.com/inertiajs/inertia/compare/v3.7.1...3.x)
+## [Unreleased](https://github.com/inertiajs/inertia/compare/v3.8.0...main)
 
 - Nothing yet
+
+## [v3.8.0](https://github.com/inertiajs/inertia/compare/v3.7.1...v3.8.0) - 2026-10-04
+
+Tracks [Inertia v3.8.0](https://github.com/inertiajs/inertia/releases/tag/v3.8.0). Requires `@inertiajs/core@^3.8.0`.
+
+### Added
+
+- **`WhenMounted`**: renders its fallback on the server and during hydration, then swaps in the content. Without SSR, and on later visits, the content renders immediately. Use it for content that depends on browser-only APIs.
+  
+  ```html
+  <inertia-when-mounted>
+    <ng-template inertiaWhenMountedFallback>Loading…</ng-template>
+    <ng-template inertiaWhenMountedContent><app-chart /></ng-template>
+  </inertia-when-mounted>
+  
+  
+  ```
+- **`Link` and `Form` visit callbacks**: `[onHttpException]`, `[onNetworkError]` and `[onFlash]`, plus notification-only `(httpException)`, `(networkError)` and `(flash)` outputs. Returning `false` from `onHttpException` or `onNetworkError` suppresses the global event.
+  
+
+### From Inertia core
+
+Big integers as native `BigInt` values, an asset version check before restoring history on back/forward reloads, cleanup of cancelled in-flight prefetches, a fix for multi-byte UTF-8 in SSR request bodies, and more. See the [upstream release notes](https://github.com/inertiajs/inertia/releases/tag/v3.8.0).
+
+### Maintenance
+
+- The library is now built and tested against Angular 22.2. The supported peer range is unchanged (`>=22.1.0 <23.0.0`).
+- If you use SSR, upgrade `@angular/platform-server` to at least 22.1.6 (and `@angular/router` to at least 22.2.0 if your app has it). Older versions have published SSR security advisories.
 
 ## [v3.7.1](https://github.com/inertiajs/inertia/compare/v3.7.0...v3.7.1) - 2026-09-11
 
