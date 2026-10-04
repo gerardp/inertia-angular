@@ -19,3 +19,8 @@ onlyBuiltDependencies:
 
 overrides:
   cookie: '>=0.7.0'
+
+auditConfig:
+  ignoreGhsas:
+    # braces has no patched release; it only reaches the other adapters' es-check dev tooling
+    - GHSA-vfj7-8cjw-p6xm
