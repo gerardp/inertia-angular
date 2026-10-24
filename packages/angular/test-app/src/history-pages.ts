@@ -118,7 +118,9 @@ class HistoryPrefetch {
     <a inertiaLink href="/encrypted-history/logout">Log out</a>
     <h1>{{ title() }}</h1>
     @if (token()) {
-      <div>Token: <span id="token">{{ token() }}</span></div>
+      <div>
+        Token: <span id="token">{{ token() }}</span>
+      </div>
     }
   `,
 })

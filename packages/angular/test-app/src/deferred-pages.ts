@@ -133,11 +133,15 @@ class DeferredInstantReload {
   template: `
     <inertia-deferred data="foo">
       <ng-template inertiaDeferredFallback><div>Loading foo...</div></ng-template>
-      <ng-template inertiaDeferredContent><div id="foo-timestamp">{{ page().props.foo?.timestamp }}</div></ng-template>
+      <ng-template inertiaDeferredContent
+        ><div id="foo-timestamp">{{ page().props.foo?.timestamp }}</div></ng-template
+      >
     </inertia-deferred>
     <inertia-deferred data="bar">
       <ng-template inertiaDeferredFallback><div>Loading bar...</div></ng-template>
-      <ng-template inertiaDeferredContent><div id="bar-timestamp">{{ page().props.bar?.timestamp }}</div></ng-template>
+      <ng-template inertiaDeferredContent
+        ><div id="bar-timestamp">{{ page().props.bar?.timestamp }}</div></ng-template
+      >
     </inertia-deferred>
     <button type="button" (click)="reload(['foo'])">Reload foo only</button>
     <button type="button" (click)="reload(['bar'])">Reload bar only</button>

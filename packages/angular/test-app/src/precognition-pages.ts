@@ -41,33 +41,81 @@ const allErrors = (error: string | string[] | undefined): string[] =>
     @if (is('DynamicArrayInputs')) {
       <button id="add-item" type="button" (click)="addItem()">Add Item</button>
       @for (item of form.data().items; track $index; let index = $index) {
-        <input [name]="'items.' + index + '.name'" [value]="item.name" (input)="updateItem(index, $event)" (blur)="validateItem(index)" />
-        @if (itemInvalid(index)) { <p [id]="'items.' + index + '.name-error'">{{ itemError(index) }}</p> }
+        <input
+          [name]="'items.' + index + '.name'"
+          [value]="item.name"
+          (input)="updateItem(index, $event)"
+          (blur)="validateItem(index)"
+        />
+        @if (itemInvalid(index)) {
+          <p [id]="'items.' + index + '.name-error'">{{ itemError(index) }}</p>
+        }
       }
     } @else if (is('TransformKeys')) {
-      <input id="email-input" name="customer.email" [value]="form.data().document.customer.email" (input)="form.setData('document.customer.email', inputValue($event))" (blur)="form.validate(transformKey)" />
-      @if (form.invalid(transformKey)) { <p>{{ form.errors()[transformKey] }}</p> }
-      @if (form.valid(transformKey)) { <p>Email is valid!</p> }
+      <input
+        id="email-input"
+        name="customer.email"
+        [value]="form.data().document.customer.email"
+        (input)="form.setData('document.customer.email', inputValue($event))"
+        (blur)="form.validate(transformKey)"
+      />
+      @if (form.invalid(transformKey)) {
+        <p>{{ form.errors()[transformKey] }}</p>
+      }
+      @if (form.valid(transformKey)) {
+        <p>Email is valid!</p>
+      }
     } @else {
-      <input name="name" placeholder="Name" [id]="is('Cancel') ? 'auto-cancel-name-input' : null" [value]="form.data().name" (input)="form.setData('name', inputValue($event))" (blur)="handleBlur('name')" />
+      <input
+        name="name"
+        placeholder="Name"
+        [id]="is('Cancel') ? 'auto-cancel-name-input' : null"
+        [value]="form.data().name"
+        (input)="form.setData('name', inputValue($event))"
+        (blur)="handleBlur('name')"
+      />
       @if (isAllErrors()) {
-        @for (error of errorsFor('name'); track $index; let index = $index) { <p [id]="'name-error-' + index">{{ error }}</p> }
-      } @else if (form.invalid('name')) { <p [id]="is('ErrorSync') ? 'name-error' : null">{{ form.errors().name }}</p> }
-      @if (form.valid('name')) { <p>Name is valid!</p> }
+        @for (error of errorsFor('name'); track $index; let index = $index) {
+          <p [id]="'name-error-' + index">{{ error }}</p>
+        }
+      } @else if (form.invalid('name')) {
+        <p [id]="is('ErrorSync') ? 'name-error' : null">{{ form.errors().name }}</p>
+      }
+      @if (form.valid('name')) {
+        <p>Name is valid!</p>
+      }
 
       @if (!is('Cancel') && !is('Files') && !is('Headers')) {
-        <input name="email" placeholder="Email" [value]="form.data().email" (input)="form.setData('email', inputValue($event))" (blur)="handleBlur('email')" />
+        <input
+          name="email"
+          placeholder="Email"
+          [value]="form.data().email"
+          (input)="form.setData('email', inputValue($event))"
+          (blur)="handleBlur('email')"
+        />
         @if (isAllErrors()) {
-          @for (error of errorsFor('email'); track $index; let index = $index) { <p [id]="'email-error-' + index">{{ error }}</p> }
-        } @else if (form.invalid('email')) { <p [id]="is('ErrorSync') ? 'email-error' : null">{{ form.errors().email }}</p> }
-        @if (form.valid('email')) { <p>Email is valid!</p> }
+          @for (error of errorsFor('email'); track $index; let index = $index) {
+            <p [id]="'email-error-' + index">{{ error }}</p>
+          }
+        } @else if (form.invalid('email')) {
+          <p [id]="is('ErrorSync') ? 'email-error' : null">{{ form.errors().email }}</p>
+        }
+        @if (form.valid('email')) {
+          <p>Email is valid!</p>
+        }
       }
 
       @if (is('Files')) {
         <input id="avatar" name="avatar" type="file" (change)="form.setData('avatar', inputFile($event))" />
-        @if (form.invalid('avatar')) { <p>{{ form.errors().avatar }}</p> }
-        @if (form.valid('avatar')) { <p>Avatar is valid!</p> }
-        <button type="button" (click)="toggleFiles()">Toggle Validate Files ({{ validateFiles() ? 'enabled' : 'disabled' }})</button>
+        @if (form.invalid('avatar')) {
+          <p>{{ form.errors().avatar }}</p>
+        }
+        @if (form.valid('avatar')) {
+          <p>Avatar is valid!</p>
+        }
+        <button type="button" (click)="toggleFiles()">
+          Toggle Validate Files ({{ validateFiles() ? 'enabled' : 'disabled' }})
+        </button>
         <button type="button" (click)="form.validate(filesConfig)">Validate Both</button>
       }
 
@@ -86,15 +134,25 @@ const allErrors = (error: string | string[] | undefined): string[] =>
       }
 
       @if (is('Callbacks')) {
-        @if (successCalled()) { <p>onPrecognitionSuccess called!</p> }
-        @if (errorCalled()) { <p>onValidationError called!</p> }
-        @if (finishCalled()) { <p>onFinish called!</p> }
+        @if (successCalled()) {
+          <p>onPrecognitionSuccess called!</p>
+        }
+        @if (errorCalled()) {
+          <p>onValidationError called!</p>
+        }
+        @if (finishCalled()) {
+          <p>onFinish called!</p>
+        }
         <button type="button" (click)="validateCallbacks()">Validate</button>
       }
 
-      @if (is('ErrorSync')) { <button id="submit-btn" type="button" (click)="form.submit()">Submit</button> }
+      @if (is('ErrorSync')) {
+        <button id="submit-btn" type="button" (click)="form.submit()">Submit</button>
+      }
     }
-    @if (form.validating()) { <p [id]="is('ErrorSync') ? 'validating' : null">Validating...</p> }
+    @if (form.validating()) {
+      <p [id]="is('ErrorSync') ? 'validating' : null">Validating...</p>
+    }
   `,
 })
 class PrecognitionHelperPage {
@@ -212,37 +270,83 @@ class PrecognitionHelperPage {
   selector: 'test-precognition-form',
   imports: [InertiaFormDirective],
   template: `
-    @if (is('DynamicArrayInputs')) { <button id="add-item" type="button" (click)="items.update(current => [...current, ''])">Add Item</button> }
-    <form inertiaForm #form="inertiaForm" [action]="endpoint()" method="post" [validationTimeout]="100" [validateFiles]="validateFiles()" [withAllErrors]="is('WithAllErrors') ? true : null" [headers]="headers()" [transform]="transform">
+    @if (is('DynamicArrayInputs')) {
+      <button id="add-item" type="button" (click)="items.update((current) => [...current, ''])">Add Item</button>
+    }
+    <form
+      inertiaForm
+      #form="inertiaForm"
+      [action]="endpoint()"
+      method="post"
+      [validationTimeout]="100"
+      [validateFiles]="validateFiles()"
+      [withAllErrors]="is('WithAllErrors') ? true : null"
+      [headers]="headers()"
+      [transform]="transform"
+    >
       @if (is('DynamicArrayInputs')) {
         @for (item of items(); track $index; let index = $index) {
-          <input [name]="'items.' + index + '.name'" [value]="item" (input)="updateItem(index, $event)" (blur)="validateItem(form, index)" />
-          @if (form.invalid(itemKey(index))) { <p [id]="'items.' + index + '.name-error'">{{ form.errors()[itemKey(index)] }}</p> }
+          <input
+            [name]="'items.' + index + '.name'"
+            [value]="item"
+            (input)="updateItem(index, $event)"
+            (blur)="validateItem(form, index)"
+          />
+          @if (form.invalid(itemKey(index))) {
+            <p [id]="'items.' + index + '.name-error'">{{ form.errors()[itemKey(index)] }}</p>
+          }
         }
       } @else if (is('TransformKeys')) {
         <input id="email-input" name="document[customer][email]" (blur)="form.validate(transformKey)" />
-        @if (form.invalid(transformKey)) { <p>{{ form.errors()[transformKey] }}</p> }
-        @if (form.valid(transformKey)) { <p>Email is valid!</p> }
+        @if (form.invalid(transformKey)) {
+          <p>{{ form.errors()[transformKey] }}</p>
+        }
+        @if (form.valid(transformKey)) {
+          <p>Email is valid!</p>
+        }
       } @else {
-        <input name="name" placeholder="Name" [id]="is('Cancel') ? 'auto-cancel-name-input' : null" (blur)="handleBlur(form, 'name')" />
+        <input
+          name="name"
+          placeholder="Name"
+          [id]="is('Cancel') ? 'auto-cancel-name-input' : null"
+          (blur)="handleBlur(form, 'name')"
+        />
         @if (isAllErrors()) {
-          @for (error of formErrors(form, 'name'); track $index; let index = $index) { <p [id]="'name-error-' + index">{{ error }}</p> }
-        } @else if (form.invalid('name')) { <p [id]="is('ErrorSync') ? 'name-error' : null">{{ form.errors()['name'] }}</p> }
-        @if (form.valid('name')) { <p>Name is valid!</p> }
+          @for (error of formErrors(form, 'name'); track $index; let index = $index) {
+            <p [id]="'name-error-' + index">{{ error }}</p>
+          }
+        } @else if (form.invalid('name')) {
+          <p [id]="is('ErrorSync') ? 'name-error' : null">{{ form.errors()['name'] }}</p>
+        }
+        @if (form.valid('name')) {
+          <p>Name is valid!</p>
+        }
 
         @if (!is('Cancel') && !is('Files') && !is('Headers')) {
           <input name="email" placeholder="Email" (blur)="handleBlur(form, 'email')" />
           @if (isAllErrors()) {
-            @for (error of formErrors(form, 'email'); track $index; let index = $index) { <p [id]="'email-error-' + index">{{ error }}</p> }
-          } @else if (form.invalid('email')) { <p [id]="is('ErrorSync') ? 'email-error' : null">{{ form.errors()['email'] }}</p> }
-          @if (form.valid('email')) { <p>Email is valid!</p> }
+            @for (error of formErrors(form, 'email'); track $index; let index = $index) {
+              <p [id]="'email-error-' + index">{{ error }}</p>
+            }
+          } @else if (form.invalid('email')) {
+            <p [id]="is('ErrorSync') ? 'email-error' : null">{{ form.errors()['email'] }}</p>
+          }
+          @if (form.valid('email')) {
+            <p>Email is valid!</p>
+          }
         }
 
         @if (is('Files')) {
           <input id="avatar" name="avatar" type="file" />
-          @if (form.invalid('avatar')) { <p>{{ form.errors()['avatar'] }}</p> }
-          @if (form.valid('avatar')) { <p>Avatar is valid!</p> }
-          <button type="button" (click)="validateFiles.update(enabled => !enabled)">Toggle Validate Files ({{ validateFiles() ? 'enabled' : 'disabled' }})</button>
+          @if (form.invalid('avatar')) {
+            <p>{{ form.errors()['avatar'] }}</p>
+          }
+          @if (form.valid('avatar')) {
+            <p>Avatar is valid!</p>
+          }
+          <button type="button" (click)="validateFiles.update((enabled) => !enabled)">
+            Toggle Validate Files ({{ validateFiles() ? 'enabled' : 'disabled' }})
+          </button>
           <button type="button" (click)="form.validate(filesConfig)">Validate Both</button>
         }
 
@@ -261,14 +365,24 @@ class PrecognitionHelperPage {
         }
 
         @if (is('Callbacks')) {
-          @if (successCalled()) { <p>onPrecognitionSuccess called!</p> }
-          @if (errorCalled()) { <p>onValidationError called!</p> }
-          @if (finishCalled()) { <p>onFinish called!</p> }
+          @if (successCalled()) {
+            <p>onPrecognitionSuccess called!</p>
+          }
+          @if (errorCalled()) {
+            <p>onValidationError called!</p>
+          }
+          @if (finishCalled()) {
+            <p>onFinish called!</p>
+          }
           <button type="button" (click)="validateCallbacks(form)">Validate</button>
         }
-        @if (is('ErrorSync')) { <button id="submit-btn" type="submit">Submit</button> }
+        @if (is('ErrorSync')) {
+          <button id="submit-btn" type="submit">Submit</button>
+        }
       }
-      @if (form.validating()) { <p [id]="is('ErrorSync') ? 'validating' : null">Validating...</p> }
+      @if (form.validating()) {
+        <p [id]="is('ErrorSync') ? 'validating' : null">Validating...</p>
+      }
     </form>
   `,
 })
@@ -364,15 +478,21 @@ type InstantiateData = { name: string }
   selector: 'test-precognition-instantiate',
   template: `
     <select [value]="selected()" (change)="selected.set(inputValue($event))">
-      @for (key of keys; track key) { <option [value]="key">{{ key }}</option> }
+      @for (key of keys; track key) {
+        <option [value]="key">{{ key }}</option>
+      }
     </select>
     <button type="button" (click)="current().touch('name').validate()">Validate</button>
     <button type="button" (click)="current().submit()">Submit without args</button>
     <button type="button" (click)="current().submit('patch', '/dump/patch')">Submit with args</button>
     <button type="button" (click)="current().put('/dump/put')">Submit with method</button>
     <button type="button" (click)="current().submit(wayfinderSubmit)">Submit with Wayfinder</button>
-    @if (current().validating()) { <p>Validating...</p> }
-    @if (current().errors().name; as error) { <p>{{ error }}</p> }
+    @if (current().validating()) {
+      <p>Validating...</p>
+    }
+    @if (current().errors().name; as error) {
+      <p>{{ error }}</p>
+    }
   `,
 })
 class PrecognitionInstantiate {
@@ -407,9 +527,15 @@ class PrecognitionInstantiate {
   selector: 'test-precognition-compatibility',
   template: `
     <input name="company" (focus)="focusCompany($event)" />
-    @if (form.errors().name; as error) { <p id="name-error">{{ error }}</p> }
-    @if (form.errors().email; as error) { <p id="email-error">{{ error }}</p> }
-    @if (form.errors().company; as error) { <p id="company-error">{{ error }}</p> }
+    @if (form.errors().name; as error) {
+      <p id="name-error">{{ error }}</p>
+    }
+    @if (form.errors().email; as error) {
+      <p id="email-error">{{ error }}</p>
+    }
+    @if (form.errors().company; as error) {
+      <p id="company-error">{{ error }}</p>
+    }
     <button id="test-setErrors" type="button" (click)="form.setErrors(errors)">Test setErrors()</button>
     <button id="test-forgetError" type="button" (click)="form.forgetError('name')">Test forgetError()</button>
     <button id="test-touch-array" type="button" (click)="form.touch(['name', 'email'])">Test touch([])</button>

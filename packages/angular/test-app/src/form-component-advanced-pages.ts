@@ -132,10 +132,18 @@ class EventsPage {
   selector: 'test-form-options',
   imports: [Form],
   template: `
-    <form inertiaForm [action]="action()" [method]="method()" [options]="options()" [queryStringArrayFormat]="arrayFormat()">
+    <form
+      inertiaForm
+      [action]="action()"
+      [method]="method()"
+      [options]="options()"
+      [queryStringArrayFormat]="arrayFormat()"
+    >
       <h1>Form Options</h1>
       <input type="text" name="tags[]" value="alpha" /><input type="text" name="tags[]" value="beta" />
-      <div>State: <span id="state">{{ state() }}</span></div>
+      <div>
+        State: <span id="state">{{ state() }}</span>
+      </div>
       <button type="button" (click)="only.set(['users'])">Set Only (users)</button>
       <button type="button" (click)="except.set(['stats'])">Set Except (stats)</button>
       <button type="button" (click)="reset.set(['orders'])">Set Reset (orders)</button>
@@ -147,7 +155,9 @@ class EventsPage {
       <button type="button" (click)="replace.set(true)">Enable Replace</button>
       <button type="submit">Submit</button>
     </form>
-    @if (preserveScroll()) { <div style="height: 1400px">Article content</div> }
+    @if (preserveScroll()) {
+      <div style="height: 1400px">Article content</div>
+    }
   `,
 })
 class OptionsPage {
