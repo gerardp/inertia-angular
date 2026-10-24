@@ -104,8 +104,10 @@ class NestedFeed {
 @Component({
   selector: 'test-nested-once',
   template: `
-    <p id="locale">Locale: {{ page().props.config.locale }}</p><p id="timezone">Timezone: {{ page().props.config.timezone }}</p>
-    <button type="button" (click)="router.reload()">Reload</button><button type="button" (click)="router.reload({ only: ['config'] })">Reload only config</button>
+    <p id="locale">Locale: {{ page().props.config.locale }}</p>
+    <p id="timezone">Timezone: {{ page().props.config.timezone }}</p>
+    <button type="button" (click)="router.reload()">Reload</button
+    ><button type="button" (click)="router.reload({ only: ['config'] })">Reload only config</button>
   `,
 })
 class NestedOnce {
@@ -116,7 +118,8 @@ class NestedOnce {
 @Component({
   selector: 'test-nested-deep-merge',
   template: `
-    <p id="items">{{ names() }}</p><p id="label">Label: {{ page().props.data.label }}</p>
+    <p id="items">{{ names() }}</p>
+    <p id="label">Label: {{ page().props.data.label }}</p>
     <button type="button" (click)="router.reload({ only: ['data'], data: { page: 2 } })">Load More</button>
   `,
 })
@@ -133,7 +136,8 @@ class NestedDeepMerge {
 @Component({
   selector: 'test-nested-shared-dot-props',
   template: `
-    <p id="name">Name: {{ auth().user.name }}</p><p id="email">Email: {{ auth().user.email }}</p>
+    <p id="name">Name: {{ auth().user.name }}</p>
+    <p id="email">Email: {{ auth().user.email }}</p>
     <p id="permissions">Permissions: {{ auth().user.permissions?.join(', ') }}</p>
     <button type="button" (click)="router.reload({ only: ['auth.user.permissions'] })">Reload Permissions</button>
   `,
@@ -171,9 +175,13 @@ class NestedDeferredSiblings {
 @Component({
   selector: 'test-nested-except-dot-props',
   template: `
-    <p id="user">User: {{ auth().user }}</p><p id="token">Token: {{ auth().token }}</p><p id="session-id">Session: {{ auth().sessionId }}</p>
+    <p id="user">User: {{ auth().user }}</p>
+    <p id="token">Token: {{ auth().token }}</p>
+    <p id="session-id">Session: {{ auth().sessionId }}</p>
     <button type="button" (click)="router.reload({ except: ['auth.token'] })">Reload Without Token</button>
-    <button type="button" (click)="router.reload({ except: ['auth.token', 'auth.sessionId'] })">Reload Without Token and Session</button>
+    <button type="button" (click)="router.reload({ except: ['auth.token', 'auth.sessionId'] })">
+      Reload Without Token and Session
+    </button>
   `,
 })
 class NestedExceptDotProps {

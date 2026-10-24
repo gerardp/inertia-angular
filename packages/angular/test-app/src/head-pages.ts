@@ -139,8 +139,11 @@ class HeadWithTitle {}
   selector: 'test-server-head-page',
   imports: [Head, Link],
   template: `
-    @if (override()) { <ng-template inertiaHead><meta head-key="description" name="description" content="Page override" /></ng-template> }
-    <h1>Server Head</h1><p id="foo">{{ foo() }}</p>
+    @if (override()) {
+      <ng-template inertiaHead><meta head-key="description" name="description" content="Page override" /></ng-template>
+    }
+    <h1>Server Head</h1>
+    <p id="foo">{{ foo() }}</p>
     <button type="button" (click)="router.reload({ only: ['foo'] })">Reload foo</button>
     <button type="button" (click)="replaceHead()">Replace head client-side</button>
     <a inertiaLink [href]="next()">Next server head page</a>
