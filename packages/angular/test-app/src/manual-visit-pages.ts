@@ -17,7 +17,9 @@ import { WithScrollLayout, WithoutScrollLayout } from './link-pages'
   template: `
     <span class="text">This is the page that demonstrates manual visit methods</span>
     <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get')">Standard visit Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/patch', { method: 'patch' })">Specific visit Link</a>
+    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/patch', { method: 'patch' })"
+      >Specific visit Link</a
+    >
     <a href="#" (click)="$event.preventDefault(); router.get('/dump/get')">GET Link</a>
     <a href="#" (click)="$event.preventDefault(); router.post('/dump/post')">POST Link</a>
     <a href="#" (click)="$event.preventDefault(); router.put('/dump/put')">PUT Link</a>
@@ -58,7 +60,9 @@ class VisitsAutomaticCancellation {
     <a href="#" (click)="$event.preventDefault(); router.post('/dump/post', { baz: 'post' })">POST Link</a>
     <a href="#" (click)="$event.preventDefault(); router.put('/dump/put', { foo: 'put' })">PUT Link</a>
     <a href="#" (click)="$event.preventDefault(); router.patch('/dump/patch', { bar: 'patch' })">PATCH Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.delete('/dump/delete', { data: { baz: 'delete' } })">DELETE Link</a>
+    <a href="#" (click)="$event.preventDefault(); router.delete('/dump/delete', { data: { baz: 'delete' } })"
+      >DELETE Link</a
+    >
     <a href="#" (click)="$event.preventDefault(); qsaf('brackets')">QSAF Defaults</a>
     <a href="#" (click)="$event.preventDefault(); qsaf('indices')">QSAF Indices</a>
     <a href="#" (click)="$event.preventDefault(); qsaf('brackets')">QSAF Brackets</a>
@@ -136,13 +140,28 @@ class VisitsDataAutoConverted {
   template: `
     <span class="text">This is the page that demonstrates passing custom headers through manual visits</span>
     <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get')">Standard visit Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { headers: { foo: 'bar' } })">Specific visit Link</a>
+    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { headers: { foo: 'bar' } })"
+      >Specific visit Link</a
+    >
     <a href="#" (click)="$event.preventDefault(); router.get('/dump/get', {}, { headers: { bar: 'baz' } })">GET Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.post('/dump/post', {}, { headers: { baz: 'foo' } })">POST Link</a>
+    <a href="#" (click)="$event.preventDefault(); router.post('/dump/post', {}, { headers: { baz: 'foo' } })"
+      >POST Link</a
+    >
     <a href="#" (click)="$event.preventDefault(); router.put('/dump/put', {}, { headers: { foo: 'bar' } })">PUT Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.patch('/dump/patch', {}, { headers: { bar: 'baz' } })">PATCH Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.delete('/dump/delete', { headers: { baz: 'foo' } })">DELETE Link</a>
-    <a href="#" (click)="$event.preventDefault(); router.post('/dump/post', {}, { headers: { bar: 'baz', 'X-Requested-With': 'custom' } })">Overriden Link</a>
+    <a href="#" (click)="$event.preventDefault(); router.patch('/dump/patch', {}, { headers: { bar: 'baz' } })"
+      >PATCH Link</a
+    >
+    <a href="#" (click)="$event.preventDefault(); router.delete('/dump/delete', { headers: { baz: 'foo' } })"
+      >DELETE Link</a
+    >
+    <a
+      href="#"
+      (click)="
+        $event.preventDefault();
+        router.post('/dump/post', {}, { headers: { bar: 'baz', 'X-Requested-With': 'custom' } })
+      "
+      >Overriden Link</a
+    >
   `,
 })
 class VisitsHeaders {
@@ -154,8 +173,19 @@ class VisitsHeaders {
   template: `
     <span class="text">This is the page that demonstrates error bags using manual visits</span>
     <a href="#" (click)="$event.preventDefault(); router.post('/dump/post')">Default visit</a>
-    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/post', { method: 'post', data: { foo: 'bar' }, errorBag: 'visitErrorBag' })">Basic visit</a>
-    <a href="#" (click)="$event.preventDefault(); router.post('/dump/post', { foo: 'baz' }, { errorBag: 'postErrorBag' })">POST visit</a>
+    <a
+      href="#"
+      (click)="
+        $event.preventDefault();
+        router.visit('/dump/post', { method: 'post', data: { foo: 'bar' }, errorBag: 'visitErrorBag' })
+      "
+      >Basic visit</a
+    >
+    <a
+      href="#"
+      (click)="$event.preventDefault(); router.post('/dump/post', { foo: 'baz' }, { errorBag: 'postErrorBag' })"
+      >POST visit</a
+    >
   `,
 })
 class VisitsErrorBags {
@@ -166,10 +196,18 @@ class VisitsErrorBags {
   selector: 'test-visits-replace',
   template: `
     <span class="text">This is the links page that demonstrates manual replace</span>
-    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { replace: true })">[State] Replace visit: true</a>
-    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { replace: false })">[State] Replace visit: false</a>
-    <a href="#" (click)="$event.preventDefault(); router.get('/dump/get', {}, { replace: true })">[State] Replace GET: true</a>
-    <a href="#" (click)="$event.preventDefault(); router.get('/dump/get', {}, { replace: false })">[State] Replace GET: false</a>
+    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { replace: true })"
+      >[State] Replace visit: true</a
+    >
+    <a href="#" (click)="$event.preventDefault(); router.visit('/dump/get', { replace: false })"
+      >[State] Replace visit: false</a
+    >
+    <a href="#" (click)="$event.preventDefault(); router.get('/dump/get', {}, { replace: true })"
+      >[State] Replace GET: true</a
+    >
+    <a href="#" (click)="$event.preventDefault(); router.get('/dump/get', {}, { replace: false })"
+      >[State] Replace GET: false</a
+    >
   `,
 })
 class VisitsReplace {
@@ -272,7 +310,9 @@ class VisitsPreserveScrollFalse extends VisitsPreserveScrollBase {
   selector: 'test-visits-partial-reloads',
   template: `
     <span class="text">This is the page that demonstrates partial reloads using manual visits</span>
-    <span class="foo-text">Foo is now {{ foo() }}</span><span class="bar-text">Bar is now {{ bar() }}</span><span class="baz-text">Baz is now {{ baz() }}</span>
+    <span class="foo-text">Foo is now {{ foo() }}</span
+    ><span class="bar-text">Bar is now {{ bar() }}</span
+    ><span class="baz-text">Baz is now {{ baz() }}</span>
     <a href="#" (click)="$event.preventDefault(); visit()">Update All (visit)</a>
     <a href="#" (click)="$event.preventDefault(); visit(['headers', 'foo', 'bar'])">'Only' foo + bar (visit)</a>
     <a href="#" (click)="$event.preventDefault(); visit(['headers', 'baz'])">'Only' baz (visit)</a>
@@ -345,8 +385,14 @@ class VisitsUrlFragments {
 @Component({
   selector: 'test-visits-wayfinder',
   template: `
-    <a href="#" (click)="$event.preventDefault(); router.visit({ url: '/dump/post', method: 'post' })">Wayfinder object visit</a>
-    <a href="#" (click)="$event.preventDefault(); router.visit({ url: '/dump/patch', method: 'get' }, { method: 'patch' })">Wayfinder object method override</a>
+    <a href="#" (click)="$event.preventDefault(); router.visit({ url: '/dump/post', method: 'post' })"
+      >Wayfinder object visit</a
+    >
+    <a
+      href="#"
+      (click)="$event.preventDefault(); router.visit({ url: '/dump/patch', method: 'get' }, { method: 'patch' })"
+      >Wayfinder object method override</a
+    >
   `,
 })
 class VisitsWayfinder {
