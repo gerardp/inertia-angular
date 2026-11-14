@@ -5,7 +5,8 @@ import { http, Link, router, useForm, usePage, type ResolvedComponent } from 'in
 @Component({
   selector: 'test-merge-props',
   template: `
-    <div>bar count is {{ bar().length }}</div><div>foo count is {{ foo().length }}</div>
+    <div>bar count is {{ bar().length }}</div>
+    <div>foo count is {{ foo().length }}</div>
     <button type="button" (click)="router.reload({ only: ['foo'] })">Reload</button>
     <button type="button" (click)="router.reload({ reset: ['foo'] })">Get Fresh</button>
   `,
@@ -74,8 +75,10 @@ type MixedProp = {
 @Component({
   selector: 'test-complex-merge-selective',
   template: `
-    <div>name is {{ mixed().name }}</div><div>users: {{ mixed().users.join(', ') }}</div>
-    <div>chat.data: {{ mixed().chat.data.join(', ') }}</div><div>post.id: {{ mixed().post.id }}</div>
+    <div>name is {{ mixed().name }}</div>
+    <div>users: {{ mixed().users.join(', ') }}</div>
+    <div>chat.data: {{ mixed().chat.data.join(', ') }}</div>
+    <div>post.id: {{ mixed().post.id }}</div>
     <div>post.comments.allowed: {{ mixed().post.comments.allowed }}</div>
     <div>post.comments.data: {{ mixed().post.comments.data.join(', ') }}</div>
     <button type="button" (click)="router.reload({ only: ['mixed'] })">Reload</button>

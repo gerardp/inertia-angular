@@ -295,7 +295,9 @@ class RememberTabsNav {}
 
 @Component({
   selector: 'test-remember-notes',
-  template: `<label>Notes <input type="text" [value]="notes().text" (input)="setText($any($event.target).value)" /></label>`,
+  template: `<label
+    >Notes <input type="text" [value]="notes().text" (input)="setText($any($event.target).value)"
+  /></label>`,
 })
 class RememberNotes {
   readonly notes = useRemember({ text: '' }, 'Users/Notes')
