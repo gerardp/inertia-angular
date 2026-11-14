@@ -39,11 +39,19 @@ type ClientPageProps = { foo: string; bar: string }
 @Component({
   selector: 'test-client-visit-one',
   template: `
-    <div>{{ foo() }}</div><div>{{ bar() }}</div><button type="button" (click)="replace()">Replace</button>
-    <button type="button" (click)="replaceWithErrors({ name: 'Field is required' })">Replace with errors</button><button type="button" (click)="replaceWithErrors()">Replace without errors</button>
-    <button type="button" (click)="push()">Push</button><button type="button" (click)="pushSameUrl()">Push same URL</button>
-    <button type="button" (click)="defaultErrors()">Errors (default)</button><button type="button" (click)="bagErrors()">Errors (bag)</button>
-    <div>Errors: {{ errorCount() }}</div><div>Finished: {{ finishedCount() }}</div><div>Success: {{ successCount() }}</div><div id="random">Random: {{ random }}</div>
+    <div>{{ foo() }}</div>
+    <div>{{ bar() }}</div>
+    <button type="button" (click)="replace()">Replace</button>
+    <button type="button" (click)="replaceWithErrors({ name: 'Field is required' })">Replace with errors</button
+    ><button type="button" (click)="replaceWithErrors()">Replace without errors</button>
+    <button type="button" (click)="push()">Push</button
+    ><button type="button" (click)="pushSameUrl()">Push same URL</button>
+    <button type="button" (click)="defaultErrors()">Errors (default)</button
+    ><button type="button" (click)="bagErrors()">Errors (bag)</button>
+    <div>Errors: {{ errorCount() }}</div>
+    <div>Finished: {{ finishedCount() }}</div>
+    <div>Success: {{ successCount() }}</div>
+    <div id="random">Random: {{ random }}</div>
   `,
 })
 class ClientVisitOne {
@@ -106,12 +114,34 @@ type User = { name: string; age: number }
 @Component({
   selector: 'test-client-props',
   template: `
-    <h1>Client Side Visit Props Testing</h1><div>User: {{ user()?.name || 'Unknown' }} (Age: {{ user()?.age || 'Unknown' }})</div><div>Count: {{ count() }}</div>
-    <div>Items: {{ json(items()) }}</div><div>Tags: {{ json(tags()) }}</div><div>Single Value: {{ json(singleValue()) }}</div><div>Undefined Value: {{ json(undefinedValue()) }}</div>
-    <button type="button" (click)="router.replaceProp('user.name', 'Jane Smith')">Replace user.name</button><button type="button" (click)="router.replaceProp('count', 10)">Replace count</button><button type="button" (click)="router.replaceProp('count', double)">Replace count (function)</button>
-    <button type="button" (click)="router.appendToProp('items', 'item3')">Append to items (single)</button><button type="button" (click)="router.appendToProp('items', ['item4', 'item5'])">Append to items (multiple)</button><button type="button" (click)="router.appendToProp('tags', tagThree)">Append to tags (function)</button><button type="button" (click)="router.appendToProp('tags', tagArray)">Append array to array (objects)</button>
-    <button type="button" (click)="router.prependToProp('items', 'item0')">Prepend to items (single)</button><button type="button" (click)="router.prependToProp('items', ['itemA', 'itemB'])">Prepend to items (multiple)</button><button type="button" (click)="router.prependToProp('tags', tagZero)">Prepend to tags (function)</button>
-    <button type="button" (click)="router.appendToProp('singleValue', 'world')">Append to non-array (single + single)</button><button type="button" (click)="router.prependToProp('singleValue', 'hey')">Prepend to non-array (single + single)</button><button type="button" (click)="router.appendToProp('singleValue', ['there', 'world'])">Append array to non-array (single + array)</button><button type="button" (click)="router.prependToProp('singleValue', ['hey', 'hi'])">Prepend array to non-array (array + single)</button><button type="button" (click)="router.appendToProp('undefinedValue', 'new value')">Append to undefined</button><button type="button" (click)="router.prependToProp('undefinedValue', 'start value')">Prepend to undefined</button>
+    <h1>Client Side Visit Props Testing</h1>
+    <div>User: {{ user()?.name || 'Unknown' }} (Age: {{ user()?.age || 'Unknown' }})</div>
+    <div>Count: {{ count() }}</div>
+    <div>Items: {{ json(items()) }}</div>
+    <div>Tags: {{ json(tags()) }}</div>
+    <div>Single Value: {{ json(singleValue()) }}</div>
+    <div>Undefined Value: {{ json(undefinedValue()) }}</div>
+    <button type="button" (click)="router.replaceProp('user.name', 'Jane Smith')">Replace user.name</button
+    ><button type="button" (click)="router.replaceProp('count', 10)">Replace count</button
+    ><button type="button" (click)="router.replaceProp('count', double)">Replace count (function)</button>
+    <button type="button" (click)="router.appendToProp('items', 'item3')">Append to items (single)</button
+    ><button type="button" (click)="router.appendToProp('items', ['item4', 'item5'])">Append to items (multiple)</button
+    ><button type="button" (click)="router.appendToProp('tags', tagThree)">Append to tags (function)</button
+    ><button type="button" (click)="router.appendToProp('tags', tagArray)">Append array to array (objects)</button>
+    <button type="button" (click)="router.prependToProp('items', 'item0')">Prepend to items (single)</button
+    ><button type="button" (click)="router.prependToProp('items', ['itemA', 'itemB'])">
+      Prepend to items (multiple)</button
+    ><button type="button" (click)="router.prependToProp('tags', tagZero)">Prepend to tags (function)</button>
+    <button type="button" (click)="router.appendToProp('singleValue', 'world')">
+      Append to non-array (single + single)</button
+    ><button type="button" (click)="router.prependToProp('singleValue', 'hey')">
+      Prepend to non-array (single + single)</button
+    ><button type="button" (click)="router.appendToProp('singleValue', ['there', 'world'])">
+      Append array to non-array (single + array)</button
+    ><button type="button" (click)="router.prependToProp('singleValue', ['hey', 'hi'])">
+      Prepend array to non-array (array + single)</button
+    ><button type="button" (click)="router.appendToProp('undefinedValue', 'new value')">Append to undefined</button
+    ><button type="button" (click)="router.prependToProp('undefinedValue', 'start value')">Prepend to undefined</button>
   `,
 })
 class ClientVisitProps {

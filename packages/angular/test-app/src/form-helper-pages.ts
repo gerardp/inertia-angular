@@ -534,10 +534,34 @@ type NestedData = {
     <input id="name" [value]="form.data().name" (input)="form.setData('name', value($event))" />
     <input id="street" [value]="form.data().address.street" (input)="form.setData('address.street', value($event))" />
     <input id="city" [value]="form.data().address.city" (input)="form.setData('address.city', value($event))" />
-    @for (option of checkOptions; track option) { <input type="checkbox" [id]="option" [value]="option" [checked]="form.data().checked.includes(option)" (change)="toggleChecked(option, $event)" /> }
-    <input id="organization-name" [value]="form.data().organization.name" (input)="form.setData('organization.name', value($event))" />
-    <input id="repo-name" [value]="form.data().organization.repo.name" (input)="form.setData('organization.repo.name', value($event))" />
-    @for (tag of tags; track tag; let index = $index) { <input type="checkbox" [id]="'tag-' + index" [value]="tag" [checked]="form.data().organization.repo.tags.includes(tag)" (change)="toggleTag(tag, $event)" /> }
+    @for (option of checkOptions; track option) {
+      <input
+        type="checkbox"
+        [id]="option"
+        [value]="option"
+        [checked]="form.data().checked.includes(option)"
+        (change)="toggleChecked(option, $event)"
+      />
+    }
+    <input
+      id="organization-name"
+      [value]="form.data().organization.name"
+      (input)="form.setData('organization.name', value($event))"
+    />
+    <input
+      id="repo-name"
+      [value]="form.data().organization.repo.name"
+      (input)="form.setData('organization.repo.name', value($event))"
+    />
+    @for (tag of tags; track tag; let index = $index) {
+      <input
+        type="checkbox"
+        [id]="'tag-' + index"
+        [value]="tag"
+        [checked]="form.data().organization.repo.tags.includes(tag)"
+        (change)="toggleTag(tag, $event)"
+      />
+    }
     <button type="button" (click)="form.submit('post', '/dump/post')">Submit form</button>
   `,
 })

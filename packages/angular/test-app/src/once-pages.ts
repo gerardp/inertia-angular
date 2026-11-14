@@ -13,7 +13,8 @@ import {
   selector: 'test-once-page-a',
   imports: [Link],
   template: `
-    <p id="foo">Foo: {{ foo() }}</p><p id="bar">Bar: {{ bar() }}</p>
+    <p id="foo">Foo: {{ foo() }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
     <a inertiaLink href="/once-props/page-b">Go to Page B</a><a inertiaLink href="/once-props/page-c">Go to Page C</a>
     <a inertiaLink href="/once-props/page-d" prefetch="mount">Go to Page D</a>
     <a inertiaLink href="/once-props/page-e" prefetch="mount" [cacheFor]="1000">Go to Page E (short cache)</a>
@@ -31,8 +32,10 @@ class OncePageA {
   selector: 'test-once-page-b',
   imports: [Link],
   template: `
-    <p id="foo">Foo: {{ foo() }}</p><p id="bar">Bar: {{ bar() }}</p>
-    <a inertiaLink href="/once-props/page-a">Go to Page A</a><button type="button" (click)="router.reload({ only: ['foo'] })">Reload (only foo)</button>
+    <p id="foo">Foo: {{ foo() }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    <a inertiaLink href="/once-props/page-a">Go to Page A</a
+    ><button type="button" (click)="router.reload({ only: ['foo'] })">Reload (only foo)</button>
   `,
 })
 class OncePageB {
@@ -62,8 +65,10 @@ class OnceDisplay {
   selector: 'test-once-partial-a',
   imports: [Link],
   template: `
-    <p id="foo">Foo: {{ foo() }}</p><p id="bar">Bar: {{ bar() }}</p>
-    <a inertiaLink href="/once-props/partial-reload/b">Go to Partial Reload B</a><button type="button" (click)="router.reload({ only: ['foo'] })">Reload (only foo)</button>
+    <p id="foo">Foo: {{ foo() }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    <a inertiaLink href="/once-props/partial-reload/b">Go to Partial Reload B</a
+    ><button type="button" (click)="router.reload({ only: ['foo'] })">Reload (only foo)</button>
   `,
 })
 class OncePartialA {
@@ -136,8 +141,10 @@ class OnceSlowDeferred {
   selector: 'test-once-ttl-a',
   imports: [Link],
   template: `
-    <p id="foo">Foo: {{ foo() }}</p><p id="bar">Bar: {{ bar() }}</p>
-    <a inertiaLink href="/once-props/ttl/b">Go to TTL Page B</a><a inertiaLink href="/once-props/ttl/c" prefetch="mount">Go to TTL Page C</a>
+    <p id="foo">Foo: {{ foo() }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    <a inertiaLink href="/once-props/ttl/b">Go to TTL Page B</a
+    ><a inertiaLink href="/once-props/ttl/c" prefetch="mount">Go to TTL Page C</a>
     <button type="button" (click)="router.reload({ only: ['foo'] })">Reload foo</button>
   `,
 })
@@ -162,8 +169,13 @@ class OnceTtlOther {
   selector: 'test-once-optional',
   imports: [Link],
   template: `
-    <p id="foo">Foo: {{ foo() ?? 'not loaded' }}</p><p id="bar">Bar: {{ bar() }}</p>
-    @if (page().component === 'OnceProps/OptionalPageA') { <a inertiaLink href="/once-props/optional/b">Go to Optional Page B</a> } @else { <a inertiaLink href="/once-props/optional/a">Go to Optional Page A</a> }
+    <p id="foo">Foo: {{ foo() ?? 'not loaded' }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    @if (page().component === 'OnceProps/OptionalPageA') {
+      <a inertiaLink href="/once-props/optional/b">Go to Optional Page B</a>
+    } @else {
+      <a inertiaLink href="/once-props/optional/a">Go to Optional Page A</a>
+    }
     <button type="button" (click)="router.reload({ only: ['foo'] })">Load foo</button>
   `,
 })
@@ -178,8 +190,13 @@ class OnceOptional {
   selector: 'test-once-merge',
   imports: [Link],
   template: `
-    <p id="items">Items count: {{ items().length }}</p><p id="bar">Bar: {{ bar() }}</p>
-    @if (page().component === 'OnceProps/MergePageA') { <a inertiaLink href="/once-props/merge/b">Go to Merge Page B</a> } @else { <a inertiaLink href="/once-props/merge/a">Go to Merge Page A</a> }
+    <p id="items">Items count: {{ items().length }}</p>
+    <p id="bar">Bar: {{ bar() }}</p>
+    @if (page().component === 'OnceProps/MergePageA') {
+      <a inertiaLink href="/once-props/merge/b">Go to Merge Page B</a>
+    } @else {
+      <a inertiaLink href="/once-props/merge/a">Go to Merge Page A</a>
+    }
     <button type="button" (click)="router.reload({ only: ['items'] })">Load more items</button>
   `,
 })
